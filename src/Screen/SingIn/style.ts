@@ -62,3 +62,9 @@ export const FooterWrapper = styled.View`
 
   justify-content: space-between; ;
 `;
+
+export const Loader = styled.ActivityIndicator.attrs({
+  color: "#3f51b5",
+  size: RFValue(50),
+})`
+`;

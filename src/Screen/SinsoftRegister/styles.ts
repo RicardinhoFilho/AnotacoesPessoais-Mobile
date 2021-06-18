@@ -62,22 +62,21 @@ export const SubmitButton = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
 
-  margin-top:${RFValue(10)}px;
+  margin-top: ${RFValue(10)}px;
 `;
 
 export const ButtonText = styled.Text`
   color: ${({ theme }) => theme.colors.light};
+  font-family: ${({ theme }) => theme.fonts.medium};
 `;
 
 export const Attention = styled.Text`
-
   color: ${({ theme }) => theme.colors.attention};
   font-family: ${({ theme }) => theme.fonts.regular};
-  font-size:${RFValue(15)}px;
+  font-size: ${RFValue(15)}px;
 
   margin-top: -${RFValue(5)}px;
-
-`; 
+`;
 
 export const Loader = styled.ActivityIndicator.attrs({
   color: "#3f51b5",

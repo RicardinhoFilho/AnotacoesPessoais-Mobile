@@ -49,11 +49,18 @@ export function SinsoftRegister({ handleClose, handleNewAccount }: Props) {
   const [loading, setLoading] = useState(false);
 
   async function handleRegister(form: IFormData) {
-    setLoading(true);
-    const email = form.email;
-    const password = form.password;
 
-    await singIn(form)
+    try{
+      setLoading(true);
+      const email = form.email;
+      const password = form.password;
+  
+      await singIn(form)
+    
+    }catch(error){
+      console.log(error);
+      Alert.alert("Não foi possível efetuar o Login")
+    }
     setLoading(false);
   }
 

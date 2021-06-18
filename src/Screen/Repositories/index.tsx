@@ -9,9 +9,27 @@ import {
   LogoutButton,
   Icon,
   User,
+  RepositoriesView,
+  Title,
+  RepositoriesList,
+  RepositoriesViewHeader,
+  Filter,
+  AddFolderButton,
+  AddFolderIcon,
+  HandleView,
+  FilterFolderIcon,
+  FilterFolderIconButton,
+  ReturnIconButton,
+  ReturnIcon,
 } from "./styles";
 
 import { useUser } from "../../hooks/user";
+import { useRepositories } from "../../hooks/repositories";
+import { Card } from "../../Components/Card";
+
+import { handleFilter } from "../../Utils/handleFilter";
+import { Modal, TouchableWithoutFeedback } from "react-native";
+import { RepositoryOperations } from "../../Components/RepositoryOperations";
 
 interface IUser {
   name?: string;
@@ -22,15 +40,34 @@ interface IUser {
 }
 
 export function Repositories() {
+  const { getRepositories, repositories } = useRepositories();
   const { user, signOut } = useUser();
+
+  const [filterIsPress, setFilterIsPress] = useState(false);
+  const [filterValue, setFilterValue] = useState("");
+
+  const [addRepositoryModalOpen, setAddRepositoryModalOpen] = useState(false);
 
   function handleLogOut() {
     signOut();
   }
 
-  useEffect(() => {}, []);
+  function handleSetFilterPress() {
+    filterIsPress ? setFilterValue("") : "";
+    setFilterIsPress(!filterIsPress);
+  }
+
+  function handleAddRepositoryModalOpen() {
+    setAddRepositoryModalOpen(!addRepositoryModalOpen);
+  }
+
+  useEffect(() => {
+    getRepositories();
+    console.log(repositories);
+  }, []);
 
   return (
+    
     <Container>
       <Header>
         <UserInfo>
@@ -50,6 +87,63 @@ export function Repositories() {
           <Icon name="power" onPress={handleLogOut} />
         </LogoutButton>
       </Header>
+
+      <RepositoriesView>
+        <RepositoriesViewHeader>
+          {filterIsPress ? (
+            <>
+              <ReturnIconButton onPress={handleSetFilterPress}>
+                <ReturnIcon name="arrowleft" />
+              </ReturnIconButton>
+              <Filter onChangeText={setFilterValue} />
+            </>
+          ) : (
+            <>
+              <HandleView>
+                <AddFolderButton onPress={handleAddRepositoryModalOpen}>
+                  <AddFolderIcon name="addfolder" />
+                </AddFolderButton>
+              </HandleView>
+              <HandleView>
+                <Title>{repositories.length} Repositórios</Title>
+              </HandleView>
+              <HandleView>
+                <FilterFolderIconButton>
+                  <FilterFolderIcon
+                    name="search1"
+                    onPress={handleSetFilterPress}
+                  />
+                </FilterFolderIconButton>
+              </HandleView>
+            </>
+          )}
+
+          {/*  */}
+        </RepositoriesViewHeader>
+        {repositories && (
+          <RepositoriesList
+            data={repositories}
+            keyExtractor={(item) => item.id}
+            renderItem={({ item }) => (
+              <Card
+                invisible={
+                  filterValue.length > 0 &&
+                  handleFilter(filterValue, item.title, item.description)
+                    ? true
+                    : false
+                }
+                id={item.id}
+                title={item.title}
+                description={item.description}
+              />
+            )}
+          />
+        )}
+      </RepositoriesView>
+
+      <Modal visible={addRepositoryModalOpen}>
+        <RepositoryOperations onClose={handleAddRepositoryModalOpen} />
+      </Modal>
     </Container>
   );
 }

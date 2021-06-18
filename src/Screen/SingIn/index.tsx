@@ -25,6 +25,7 @@ import {
   SinsoftButton,
   AnottationText,
   SignInTitle,
+  Loader
 } from "./style";
 export function SingIn() {
   const authContext = useAuth();
@@ -33,17 +34,22 @@ export function SingIn() {
     useState(false);
   const [sinsoftFirstRegisterModalOpen, setSinsoftFirstRegisterModalOpen] =
     useState(false);
+    const [loading, setLoading] = useState(false);
   function handleSinsoftRegisterModalOpen() {
     setSinsoftRegisterModalOpen(!sinsoftRegisterModalOpen);
   }
 
   function handleNewSinsoftAccountModal() {
+    setLoading(true);
     setSinsoftFirstRegisterModalOpen(!sinsoftFirstRegisterModalOpen);
+    setLoading(false);
   }
 
   async function handleSignInWithGoogle() {
-    await authContext.signInWithGoogle();
-    await userContext.singIn(userContext.user);
+    setLoading(true);
+    const user = await authContext.signInWithGoogle();
+    user? await userContext.singIn(user) : "";
+    setLoading(false);
   }
 
   return (
@@ -63,6 +69,8 @@ export function SingIn() {
           anotações de forma{"\n"}
           muito simples!
         </AnottationText>
+
+        {loading && <Loader />}
         <SignInTitle>
           {/* Faça seu login {"\n"}
           com uma das opções abaixo */}

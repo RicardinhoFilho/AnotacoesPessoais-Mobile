@@ -5,15 +5,20 @@ import { useUser } from "../hooks/user";
 
 import { AuthRoutes } from "./auth.routes";
 import { AppRoutes } from "./app.routes";
+import { emailDataKey } from "../Services/asyncStorage";
+import { checkUserLogged } from "../Services/checkUserIsLogged";
 
 export function Routes() {
   const [userLogged, setUserLogged] = useState(false);
 
-  const userContext = useUser();
+  const { user, userIsLogged } = useUser();
+  async function userStatus() {
+    setUserLogged(userIsLogged);
+  }
 
   useEffect(() => {
-    setUserLogged(userContext.userIsLogged);
-  }, [userContext.userIsLogged]);
+    userStatus();
+  }, [userIsLogged]);
 
   return (
     <NavigationContainer>

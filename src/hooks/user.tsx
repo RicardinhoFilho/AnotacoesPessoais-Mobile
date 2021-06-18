@@ -30,6 +30,7 @@ interface IUserContextData {
   checkUserLogged(): Promise<void>;
   singIn({ name, photo, email, password }: IUser): Promise<void>;
   singUp({ name, photo, email, password }: IUser): Promise<void>;
+  refreshToken(): Promise<void>;
 }
 
 interface IUser {
@@ -48,7 +49,7 @@ function UserProvider({ children }: IAuthProviderProps) {
   const [userIsLogged, setUserIsLogged] = useState(false);
 
   async function signOut(): Promise<void> {
-    //console.log("teste");
+    
     setUserIsLogged(false);
 
     await AsyncStorage.removeItem(nameDataKey);
@@ -74,6 +75,7 @@ function UserProvider({ children }: IAuthProviderProps) {
       return;
     }
     setUserIsLogged(true);
+    console.log(userIsLogged)
   }
 
   async function singIn({ name, photo, email, password }: IUser) {
@@ -91,11 +93,37 @@ function UserProvider({ children }: IAuthProviderProps) {
       api.defaults.headers.Authorization = `Bearer ${token}`;
 
       setUser({ name, photo, email, password });
-      console.log(user);
+      //console.log(user);
       setUserIsLogged(true);
     } catch (error) {
       console.log(error);
+      throw new Error(error.message);
       //Alert.alert("Cheque se seus dados foram preenchidos corretamente");
+    }
+  }
+
+  async function refreshToken() {
+    const name = await AsyncStorage.getItem(nameDataKey);
+    const photo = await AsyncStorage.getItem(photoDataKey);
+    const email = await AsyncStorage.getItem(emailDataKey);
+    const password = await AsyncStorage.getItem(passwordDataKey);
+    if (email && password) {
+      try {
+        const {
+          data: { token },
+        } = await api.post("/api/user/login", { email, password });
+
+        await AsyncStorage.setItem(tokenDataKey, token);
+        api.defaults.headers.Authorization = `Bearer ${token}`;
+        if (name && photo) {
+          setUser({ name, photo, email, password, token });
+        } else {
+          setUser({ email, password, token });
+        }
+
+        setUserIsLogged(true);
+
+      } catch {}
     }
   }
 
@@ -116,7 +144,7 @@ function UserProvider({ children }: IAuthProviderProps) {
   }
 
   useEffect(() => {
-    checkUserLogged();
+    refreshToken();
   }, []);
 
   return (
@@ -128,6 +156,7 @@ function UserProvider({ children }: IAuthProviderProps) {
         checkUserLogged,
         singIn,
         singUp,
+        refreshToken,
       }}
     >
       {children}

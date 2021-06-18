@@ -6,6 +6,8 @@ import { ThemeProvider } from "styled-components";
 import { AuthProvider, useAuth } from "./src/hooks/auth";
 import { UserProvider, useUser } from "./src/hooks/user";
 
+import { RepositoryProvider, useRepositories } from "./src/hooks/repositories";
+
 import {
   useFonts,
   Poppins_400Regular,
@@ -37,7 +39,9 @@ export default function App() {
     <ThemeProvider theme={theme}>
       <AuthProvider>
         <UserProvider>
-          <Routes />
+          <RepositoryProvider>
+            <Routes />
+          </RepositoryProvider>
         </UserProvider>
       </AuthProvider>
     </ThemeProvider>

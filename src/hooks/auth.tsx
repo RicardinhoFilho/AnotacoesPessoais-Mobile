@@ -25,12 +25,12 @@ interface IAuthProviderProps {
 }
 
 interface IAuthContextData {
-  signInWithGoogle(): Promise<void>;
+  signInWithGoogle(): Promise<IUser | undefined>;
   // signInWithApple(): Promise<void>;
 }
 
 interface IUser {
-  id: string;
+  password: string;
   name: string;
   email: string;
   photo?: string;
@@ -43,7 +43,7 @@ function AuthProvider({ children }: IAuthProviderProps) {
   const [user, setUser] = useState({} as IUser);
   const [loading, setLoading] = useState(true);
 
-  async function signInWithGoogle(): Promise<void> {
+  async function signInWithGoogle(): Promise<IUser | undefined> {
     try {
       const result = await Google.logInAsync({
         iosClientId:
@@ -60,13 +60,8 @@ function AuthProvider({ children }: IAuthProviderProps) {
           email: result.user.email!,
           password: String(result.user.id),
         };
-        console.log(userLogged.name,"ESEEEE");
-        try {
-          handleSingIn(userLogged);
-        } catch (error) {
-          handleSingUp(userLogged);
-          handleSingIn(userLogged);
-        }
+        //console.log(userLogged.name,"ESEEEE");
+        return userLogged;
       }
     } catch (error) {
       throw new Error(error);
