@@ -8,6 +8,8 @@ import { UserProvider, useUser } from "./src/hooks/user";
 
 import { RepositoryProvider, useRepositories } from "./src/hooks/repositories";
 
+import { NotesProvider, useNotes } from "./src/hooks/notes";
+
 import {
   useFonts,
   Poppins_400Regular,
@@ -40,7 +42,9 @@ export default function App() {
       <AuthProvider>
         <UserProvider>
           <RepositoryProvider>
-            <Routes />
+            <NotesProvider>
+              <Routes />
+            </NotesProvider>
           </RepositoryProvider>
         </UserProvider>
       </AuthProvider>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Linking, Modal } from "react-native";
+import { Alert, Linking, Modal } from "react-native";
 import { SignInSocialButton } from "../../Components/SingninSocialButton";
 import { SinsoftAdress } from "../../Utils/adress";
 
@@ -25,7 +25,7 @@ import {
   SinsoftButton,
   AnottationText,
   SignInTitle,
-  Loader
+  Loader,
 } from "./style";
 export function SingIn() {
   const authContext = useAuth();
@@ -34,7 +34,7 @@ export function SingIn() {
     useState(false);
   const [sinsoftFirstRegisterModalOpen, setSinsoftFirstRegisterModalOpen] =
     useState(false);
-    const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   function handleSinsoftRegisterModalOpen() {
     setSinsoftRegisterModalOpen(!sinsoftRegisterModalOpen);
   }
@@ -47,8 +47,13 @@ export function SingIn() {
 
   async function handleSignInWithGoogle() {
     setLoading(true);
-    const user = await authContext.signInWithGoogle();
-    user? await userContext.singIn(user) : "";
+    try {
+      const user = await authContext.signInWithGoogle();
+      user ? await userContext.singIn(user) : "";
+    } catch (error) {
+      console.log(error);
+      Alert.alert("Não foi possível entrar com Google");
+    }
     setLoading(false);
   }
 

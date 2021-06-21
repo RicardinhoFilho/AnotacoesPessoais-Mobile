@@ -28,7 +28,7 @@ import { useRepositories } from "../../hooks/repositories";
 import { Card } from "../../Components/Card";
 
 import { handleFilter } from "../../Utils/handleFilter";
-import { Modal, TouchableWithoutFeedback } from "react-native";
+import { Alert, Modal, TouchableWithoutFeedback } from "react-native";
 import { RepositoryOperations } from "../../Components/RepositoryOperations";
 
 interface IUser {
@@ -63,11 +63,9 @@ export function Repositories() {
 
   useEffect(() => {
     getRepositories();
-    console.log(repositories);
   }, []);
 
   return (
-    
     <Container>
       <Header>
         <UserInfo>
@@ -95,7 +93,7 @@ export function Repositories() {
               <ReturnIconButton onPress={handleSetFilterPress}>
                 <ReturnIcon name="arrowleft" />
               </ReturnIconButton>
-              <Filter onChangeText={setFilterValue} />
+              <Filter value={filterValue} onChangeText={setFilterValue} />
             </>
           ) : (
             <>
@@ -117,8 +115,6 @@ export function Repositories() {
               </HandleView>
             </>
           )}
-
-          {/*  */}
         </RepositoriesViewHeader>
         {repositories && (
           <RepositoriesList
@@ -135,6 +131,8 @@ export function Repositories() {
                 id={item.id}
                 title={item.title}
                 description={item.description}
+                setFilterIsPress={setFilterIsPress}
+                setFilterValue={setFilterValue}
               />
             )}
           />

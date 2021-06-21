@@ -33,6 +33,17 @@ export function AppRoutes() {
             />
           ),
         }}/>
+
+<Screen name=" " component={Repositories} options={{
+          tabBarIcon: ({ size, color }) => (
+            <MaterialIcons
+              name="format-list-bulleted"
+              size={0}
+              color={color}
+            />
+          ),
+          
+        }}/>
         
     </Navigator>
   );

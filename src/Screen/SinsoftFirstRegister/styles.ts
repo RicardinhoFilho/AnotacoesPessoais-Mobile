@@ -19,7 +19,7 @@ export const Header = styled.View`
   padding: ${RFValue(20)}px;
 `;
 
-export const ReturnIcon = styled(RectButton)`
+export const ReturnIcon = styled.TouchableOpacity`
   margin-bottom: ${RFValue(40)}px;
 `;
 export const Title = styled.Text`

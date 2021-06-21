@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-import { TouchableWithoutFeedback, Modal as UpdateModal } from "react-native";
+import {
+  TouchableWithoutFeedback,
+  Modal as UpdateModal,
+  Alert,
+} from "react-native";
 
 import { useRepositories } from "../../hooks/repositories";
 import { RepositoryOperations } from "../RepositoryOperations";
@@ -37,8 +41,15 @@ export function ModalDangerRepositoryOperation({
 
   async function handleDelete() {
     setLoading(true);
-    await deleteRepository(title, id);
-    setLoading(false);
+
+    try {
+      await deleteRepository(title, id);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      Alert.alert(error.message);
+      onClose();
+    }
   }
 
   function handleUpdate() {
