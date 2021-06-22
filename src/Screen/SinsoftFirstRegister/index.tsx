@@ -52,7 +52,10 @@ export function SinsoftFirstRegister({ handleClose }: Props) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [comparePassword, setCOmparePassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const [passwordIsEqual, setPasswordIsEqual] = useState(true);
 
   const [nameIsValid, setNameIsValid] = useState(true);
   const [emailIsValid, setEmailIsValid] = useState(true);
@@ -71,9 +74,21 @@ export function SinsoftFirstRegister({ handleClose }: Props) {
       setLoading(false);
       return;
     }
+    if(!passwordIsEqual){
+      setLoading(false);
+      return;
+    }
     singUp(form);
     singIn(form);
     setLoading(false);
+  }
+
+  function handleValidatePassword() {
+    if (comparePassword === password) {
+      setPasswordIsEqual(true);
+      return;
+    }
+    setPasswordIsEqual(false);
   }
 
   function handleNameError() {
@@ -144,6 +159,16 @@ export function SinsoftFirstRegister({ handleClose }: Props) {
               {passwordIsValid
                 ? ""
                 : "O campo Senha deve ser preenchido com pelo menos 5 caracteres"}
+            </Attention>
+            <InputForm
+              secureTextEntry={true}
+              placeholder="Senha"
+              autoCorrect={false}
+              onChangeText={setPassword}
+              onBlur={handleValidatePassword}
+            />
+            <Attention>
+              {passwordIsEqual ? "" : "Senhas não coincidem"}
             </Attention>
             {loading && <Loader />}
             <SubmitButton

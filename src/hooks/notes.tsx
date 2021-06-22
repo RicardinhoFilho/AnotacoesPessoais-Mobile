@@ -25,8 +25,9 @@ interface IAuthProviderProps {
 
 interface INotesContextData {
   handleSetRepositoryId(id: number): void;
+  deleteNote(id: number, title: string): void;
   notes: INotes[];
-  loading:boolean;
+  loading: boolean;
 }
 
 interface INotes {
@@ -44,6 +45,19 @@ function NotesProvider({ children }: IAuthProviderProps) {
 
   function handleSetRepositoryId(id: number) {
     setRepositoryId(id);
+  }
+
+  async function deleteNote(id: number, title: string) {
+    try {
+      setLoading(true);
+      await api.delete(`/api/note/${id}`);
+      await getNotes(repositoryId);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+
+      throw new Error(`Não foi possível excluir a nota${title}`);
+    }
   }
 
   async function getNotes(id: number) {
@@ -70,7 +84,8 @@ function NotesProvider({ children }: IAuthProviderProps) {
       value={{
         handleSetRepositoryId,
         notes,
-        loading
+        loading,
+        deleteNote,
       }}
     >
       {children}

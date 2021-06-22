@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, TouchableWithoutFeedback } from "react-native";
 
 import { ModalDangerRepositoryOperation } from "../ModalDangerRepositoryOperation";
@@ -59,6 +59,10 @@ export function Card({
   function handleOpenDangerRepositoryOperation() {
     setDangerRepositoryOperationModal(true);
   }
+
+  useEffect(() => {
+    console.log(title);
+  },[])
 
   return (
     <Container

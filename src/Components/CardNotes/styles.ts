@@ -9,6 +9,8 @@ interface IContainerProps {
 export const Container = styled.TouchableOpacity<IContainerProps>`
   min-width: ${RFValue(330)}px;
   max-width: ${RFValue(375)}px;
+  /* margin:${RFValue(10)}px;  */
+
   background-color: ${({ theme }) => theme.colors.light};
   border-radius: 5px;
 

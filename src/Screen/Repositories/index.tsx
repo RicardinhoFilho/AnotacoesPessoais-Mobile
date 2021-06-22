@@ -65,6 +65,10 @@ export function Repositories() {
     getRepositories();
   }, []);
 
+  function testa(){
+    console.log("teste")
+  }
+
   return (
     <Container>
       <Header>
@@ -118,6 +122,7 @@ export function Repositories() {
         </RepositoriesViewHeader>
         {repositories && (
           <RepositoriesList
+          
             data={repositories}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (

@@ -49,7 +49,6 @@ function RepositoryProvider({ children }: IAuthProviderProps) {
   const [repositories, setRepositories] = useState({} as IRepository[]);
 
   async function getRepositories() {
-    //console.log("teste")
     try {
       const { data } = await api.get<IRepository[]>("/api/repositories");
       setRepositories(data);

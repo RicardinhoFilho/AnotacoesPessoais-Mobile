@@ -106,7 +106,9 @@ export function NotesModal({
                 </AddNoteButton>
               </HandleView>
               <HandleView>
-                <NotesCount>{notes.length} Anotações</NotesCount>
+                <NotesCount>
+                  {loading ? "?" : `${notes.length} Anotações`}
+                </NotesCount>
               </HandleView>
               <HandleView>
                 <FilterNoteIconButton>
@@ -125,7 +127,6 @@ export function NotesModal({
         ) : (
           notes && (
             <NotesList
-              initialNumToRender={notes.length}
               data={notes}
               keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
