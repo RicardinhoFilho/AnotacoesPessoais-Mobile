@@ -10,9 +10,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 
-import {
-  loggedTypeDataKey
-} from "../../Services/asyncStorage";
+import { loggedTypeDataKey } from "../../Services/asyncStorage";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -46,8 +44,8 @@ interface IFormData {
   password: string;
 }
 
-export function SinsoftFirstRegister({ handleClose }: Props) {
-  const { singIn, singUp } = useUser();
+export function UseSinsoftAccount({ handleClose }: Props) {
+  const { useSinsoftAccount } = useUser();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -74,22 +72,24 @@ export function SinsoftFirstRegister({ handleClose }: Props) {
       setLoading(false);
       return;
     }
-    if(!passwordIsEqual){
+    if (!passwordIsEqual) {
       setLoading(false);
       return;
     }
-    try{
-      await singUp(form);
-      await singIn(form);
-      await  AsyncStorage.setItem(loggedTypeDataKey, "sinsoft");
-    }catch{
-      
+    try {
+      await useSinsoftAccount({ name, email, password });
+      await AsyncStorage.setItem(loggedTypeDataKey, "sinsoft");
+      Alert.alert("Sua conta foi atualizada!");
+      handleClose();
+    } catch {
+      Alert.alert("Não foi possível Cadastrar sua Conta");
     }
-   
+
     setLoading(false);
   }
 
   function handleValidatePassword() {
+    console.log(comparePassword,"teste", password)
     if (comparePassword === password) {
       setPasswordIsEqual(true);
       return;

@@ -13,7 +13,7 @@ import { SinsoftRegister } from "../SinsoftRegister";
 import { SinsoftFirstRegister } from "../SinsoftFirstRegister";
 
 import { useUser } from "../../hooks/user";
-import { useAuth } from "../../hooks/auth";
+import { usesocialLogin } from "../../hooks/socialLogin";
 
 import {
   Container,
@@ -28,7 +28,7 @@ import {
   Loader,
 } from "./style";
 export function SingIn() {
-  const authContext = useAuth();
+  const socialLoginContext = usesocialLogin();
   const userContext = useUser();
   const [sinsoftRegisterModalOpen, setSinsoftRegisterModalOpen] =
     useState(false);
@@ -48,7 +48,7 @@ export function SingIn() {
   async function handleSignInWithGoogle() {
     setLoading(true);
     try {
-      const user = await authContext.signInWithGoogle();
+      const user = await socialLoginContext.signInWithGoogle();
       user ? await userContext.singIn(user) : "";
     } catch (error) {
       console.log(error);

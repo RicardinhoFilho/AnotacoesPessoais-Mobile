@@ -31,6 +31,9 @@ interface IUserContextData {
   singIn({ name, photo, email, password }: IUser): Promise<void>;
   singUp({ name, photo, email, password }: IUser): Promise<void>;
   refreshToken(): Promise<void>;
+  updateSinsoftPassword(newPassword: string): Promise<void>;
+  useGoogleAccount(newUser: IUser): Promise<void>;
+  useSinsoftAccount(newUser: IUser): Promise<void>;
 }
 
 interface IUser {
@@ -49,7 +52,6 @@ function UserProvider({ children }: IAuthProviderProps) {
   const [userIsLogged, setUserIsLogged] = useState(false);
 
   async function signOut(): Promise<void> {
-    
     setUserIsLogged(false);
 
     await AsyncStorage.removeItem(nameDataKey);
@@ -75,7 +77,7 @@ function UserProvider({ children }: IAuthProviderProps) {
       return;
     }
     setUserIsLogged(true);
-    console.log(userIsLogged)
+    console.log(userIsLogged);
   }
 
   async function singIn({ name, photo, email, password }: IUser) {
@@ -122,7 +124,6 @@ function UserProvider({ children }: IAuthProviderProps) {
         }
 
         setUserIsLogged(true);
-
       } catch {}
     }
   }
@@ -143,6 +144,61 @@ function UserProvider({ children }: IAuthProviderProps) {
     }
   }
 
+  async function updateSinsoftPassword(newPassword: string) {
+    try {
+      const email = user.email;
+      const password = user.password;
+
+      await api.patch("/api/user/update", { email, password, newPassword });
+      // user.password = newPassword;
+      // console.log(user.password);
+    } catch (error) {
+      throw new Error("Não foi possível Atualizar sua conta!");
+    }
+  }
+
+  async function useGoogleAccount(newUser: IUser) {
+    try {
+      const email = user.email;
+      const password = user.password;
+      const newEmail = newUser.email;
+      const newPassword = newUser.password;
+
+      const result = await api.patch("/api/user/update", {
+        email,
+        password,
+        newEmail,
+        newPassword,
+      });
+      //await refreshToken();
+      //console.log(result);
+      setUser(newUser);
+    } catch (error) {
+      throw new Error("Não foi possível atualizar sua conta");
+    }
+  }
+
+  async function useSinsoftAccount(newUser: IUser) {
+    try {
+      const email = user.email;
+      const password = user.password;
+      const newEmail = newUser.email;
+      const newPassword = newUser.password;
+
+      const result = await api.patch("/api/user/update", {
+        email,
+        password,
+        newEmail,
+        newPassword,
+      });
+      //await refreshToken();
+      //console.log(result);
+      setUser(newUser);
+    } catch (error) {
+      throw new Error("Não foi possível atualizar sua conta");
+    }
+  }
+
   useEffect(() => {
     refreshToken();
   }, []);
@@ -157,6 +213,9 @@ function UserProvider({ children }: IAuthProviderProps) {
         singIn,
         singUp,
         refreshToken,
+        updateSinsoftPassword,
+        useGoogleAccount,
+        useSinsoftAccount,
       }}
     >
       {children}

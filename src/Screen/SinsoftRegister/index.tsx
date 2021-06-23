@@ -5,9 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { TouchableWithoutFeedback, Keyboard, Alert } from "react-native";
 
 import {
-  emailDataKey,
-  passwordDataKey,
-  tokenDataKey,
+  loggedTypeDataKey,
 } from "../../Services/asyncStorage";
 
 import api from "../../Services/api";
@@ -56,6 +54,7 @@ export function SinsoftRegister({ handleClose, handleNewAccount }: Props) {
       const password = form.password;
   
       await singIn(form)
+      await  AsyncStorage.setItem(loggedTypeDataKey, "sinsoft");
     
     }catch(error){
       console.log(error);

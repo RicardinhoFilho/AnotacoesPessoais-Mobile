@@ -7,24 +7,19 @@ import React, {
 } from "react";
 
 import * as Google from "expo-google-app-auth";
-import * as AppleAuthentication from "expo-apple-authentication";
+import * as ApplesocialLoginentication from "expo-apple-authentication";
 
-import {
-  emailDataKey,
-  nameDataKey,
-  photoDataKey,
-  passwordDataKey,
-} from "../Services/asyncStorage";
+import { loggedTypeDataKey } from "../Services/asyncStorage";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { handleSingIn } from "../Utils/handleSingIn";
 import { handleSingUp } from "../Utils/handleSingUp";
 
-interface IAuthProviderProps {
+interface ISocialLoginProviderProps {
   children: ReactNode;
 }
 
-interface IAuthContextData {
+interface IsocialLoginContextData {
   signInWithGoogle(): Promise<IUser | undefined>;
   // signInWithApple(): Promise<void>;
 }
@@ -36,9 +31,9 @@ interface IUser {
   photo?: string;
 }
 
-const AuthContext = createContext({} as IAuthContextData);
+const socialLoginContext = createContext({} as IsocialLoginContextData);
 
-function AuthProvider({ children }: IAuthProviderProps) {
+function SocialLoginProvider({ children }: ISocialLoginProviderProps) {
   const [] = useState();
   const [user, setUser] = useState({} as IUser);
   const [loading, setLoading] = useState(true);
@@ -60,7 +55,9 @@ function AuthProvider({ children }: IAuthProviderProps) {
           email: result.user.email!,
           password: String(result.user.id),
         };
-        //console.log(userLogged.name,"ESEEEE");
+
+        AsyncStorage.setItem(loggedTypeDataKey, "google");
+
         return userLogged;
       }
     } catch (error) {
@@ -69,20 +66,20 @@ function AuthProvider({ children }: IAuthProviderProps) {
   }
 
   return (
-    <AuthContext.Provider
+    <socialLoginContext.Provider
       value={{
         signInWithGoogle,
       }}
     >
       {children}
-    </AuthContext.Provider>
+    </socialLoginContext.Provider>
   );
 }
 
-function useAuth() {
-  const context = useContext(AuthContext);
+function usesocialLogin() {
+  const context = useContext(socialLoginContext);
 
   return context;
 }
 
-export { AuthProvider, useAuth };
+export { SocialLoginProvider, usesocialLogin };

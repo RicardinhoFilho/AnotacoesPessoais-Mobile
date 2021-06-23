@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 
 import { ThemeProvider } from "styled-components";
 
-import { AuthProvider, useAuth } from "./src/hooks/auth";
+import { SocialLoginProvider, usesocialLogin } from "./src/hooks/socialLogin";
 import { UserProvider, useUser } from "./src/hooks/user";
 
 import { RepositoryProvider, useRepositories } from "./src/hooks/repositories";
@@ -39,7 +39,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <AuthProvider>
+      <SocialLoginProvider>
         <UserProvider>
           <RepositoryProvider>
             <NotesProvider>
@@ -47,7 +47,7 @@ export default function App() {
             </NotesProvider>
           </RepositoryProvider>
         </UserProvider>
-      </AuthProvider>
+      </SocialLoginProvider>
     </ThemeProvider>
   );
 }

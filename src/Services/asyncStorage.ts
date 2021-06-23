@@ -3,3 +3,5 @@ export const passwordDataKey = "@anotacoes-pessoais:password";
 export const nameDataKey = "@anotacoes-pessoais:name";
 export const photoDataKey = "@anotacoes-pessoais:photo";
 export const tokenDataKey = "@anotacoes-pessoais:token";
+
+export const loggedTypeDataKey = "@anotacoes-pessoais:loggedType";//Sinsoft, Google, Apple
