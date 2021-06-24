@@ -28,6 +28,8 @@ import {
 
 import { useNotes } from "../../hooks/notes";
 import { CardNotes } from "../CardNotes";
+import { Modal } from "react-native";
+import{NoteOperations} from "../NoteOperations"
 
 interface INotesModalProps {
   repositoryTitle: string;
@@ -55,6 +57,11 @@ export function NotesModal({
 
   const [filterIsPress, setFilterIsPress] = useState(false);
   const [filterValue, setFilterValue] = useState("");
+  const [addNote, setAddNote] = useState(false);
+
+  function handleAddNote() {
+    setAddNote(!addNote);
+  }
 
   function handleSetFilterIsPress() {
     setFilterIsPress(!filterIsPress);
@@ -102,7 +109,7 @@ export function NotesModal({
             <>
               <HandleView>
                 <AddNoteButton /*onPress={/*handleAddRepositoryModalOpen}*/>
-                  <AddNoteIcon name="note-plus" />
+                  <AddNoteIcon name="note-plus" onPress={handleAddNote} />
                 </AddNoteButton>
               </HandleView>
               <HandleView>
@@ -147,6 +154,10 @@ export function NotesModal({
           )
         )}
       </NotesView>
+
+      <Modal visible={addNote}>
+        <NoteOperations onClose={handleAddNote} />
+      </Modal>
     </Container>
   );
 }

@@ -7,6 +7,7 @@ import { Feather } from "@expo/vector-icons";
 
 import { Container, Title, Description } from "./styles";
 import { ModalDangerNoteoOperation } from "../ModalDangerNote";
+import { Note } from "../Note";
 
 interface ICardProps {
   id: number;
@@ -27,6 +28,15 @@ export function CardNotes({
 }: ICardProps) {
   const [dangerNoteModalOperation, setDangerNoteModalOperation] =
     useState(false);
+  const [noteModal, setNoteModal] = useState(false);
+
+  function handleNoteModalOpen() {
+    setNoteModal(true);
+  }
+  
+  function handleNoteModalClose() {
+    setNoteModal(false);
+  }
 
   function handleLongPress() {
     setDangerNoteModalOperation(true);
@@ -40,7 +50,7 @@ export function CardNotes({
     <Container
       invisible={invisible}
       onLongPress={handleLongPress}
-      //   onPress={handleOpenNotesModal}
+      onPress={handleNoteModalOpen}
     >
       <Title>{title}</Title>
 
@@ -54,6 +64,13 @@ export function CardNotes({
         <ModalDangerNoteoOperation
           note={{ title, description, annotation, id }}
           onClose={handleCLoseDangerNoteModalOperation}
+        />
+      </Modal>
+
+      <Modal visible={noteModal}>
+        <Note
+          note={{ title, description, annotation, id }}
+          handleClose={handleNoteModalClose}
         />
       </Modal>
     </Container>

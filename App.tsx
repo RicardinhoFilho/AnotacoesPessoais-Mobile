@@ -22,6 +22,7 @@ import theme from "./src/global/styles/theme";
 import AppLoading from "expo-app-loading";
 
 import { Routes } from "./src/Routes";
+import { FilesProvider } from "./src/hooks/files";
 // /import { Repositories } from "./src/Pages/Repositories";
 
 export default function App() {
@@ -43,7 +44,9 @@ export default function App() {
         <UserProvider>
           <RepositoryProvider>
             <NotesProvider>
-              <Routes />
+              <FilesProvider>
+                <Routes />
+              </FilesProvider>
             </NotesProvider>
           </RepositoryProvider>
         </UserProvider>

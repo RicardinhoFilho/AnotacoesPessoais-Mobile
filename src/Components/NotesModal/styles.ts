@@ -3,7 +3,7 @@ import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { FlatList } from "react-native";
 
 import { AntDesign } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from '@expo/vector-icons'; 
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 import { RectButton } from "react-native-gesture-handler";
 
@@ -121,7 +121,7 @@ export const ReturnIconButton = styled.TouchableOpacity`
 export const HandleView = styled.View`
   padding: 0 20px;
 `;
-export const AddNoteButton = styled(RectButton)`
+export const AddNoteButton = styled.TouchableOpacity`
   /* background-color: ${({ theme }) => theme.colors.secondary}; */
 `;
 
