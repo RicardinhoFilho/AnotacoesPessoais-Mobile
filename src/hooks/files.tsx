@@ -23,10 +23,25 @@ interface IAuthProviderProps {
 }
 
 interface IFilesContextData {
-  files:IFiles[];
+  files: IFiles[];
   loadFiles(id: number): Promise<void>;
-  deleteFile(id: number): Promise<void>;
+  deleteFile(id: number, noteId: number): Promise<void>;
+  postFile({ file, title, noteId }: IPostFile): Promise<void>;
   loading: boolean;
+}
+
+interface IFileProps {
+  name: string;
+  size: number;
+  uri: string;
+  type: string;
+}
+
+interface IPostFile {
+  file: IFileProps;
+  title: string;
+
+  noteId: number;
 }
 
 export interface IFiles {
@@ -40,15 +55,16 @@ const FilesContext = createContext({} as IFilesContextData);
 
 function FilesProvider({ children }: IAuthProviderProps) {
   const [loading, setLoading] = useState(false);
-  const[files,setFiles] = useState({} as IFiles[])
-  async function deleteFile(id: number) {
+  const [files, setFiles] = useState({} as IFiles[]);
+  async function deleteFile(id: number, noteId: number) {
     try {
       setLoading(true);
       await api.delete(`/api/file/${id}`);
-      setLoading(false);
+      loadFiles(noteId);
     } catch (error) {
       throw new Error("Não foi possível deletar o anexo!");
     }
+    setLoading(false);
   }
 
   async function loadFiles(id: number) {
@@ -61,6 +77,27 @@ function FilesProvider({ children }: IAuthProviderProps) {
       console.log(error);
       throw new Error("Não foi possível carregar os anexos!");
     }
+    setLoading(false);
+  }
+
+  async function postFile({ file, title, noteId }: IPostFile) {
+    try {
+      setLoading(true);
+      const dataform = new FormData();
+
+      dataform.append("file", file);
+      dataform.append("title", title);
+
+      await api.post(`/api/files/${noteId}`, dataform);
+      console.log("deu Certo");
+      loadFiles(noteId);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+      throw new Error("Não foi possível anexar o documento!")
+      setLoading(false);
+    }
+    setLoading(false);
   }
 
   return (
@@ -69,7 +106,8 @@ function FilesProvider({ children }: IAuthProviderProps) {
         loadFiles,
         deleteFile,
         loading,
-        files
+        files,
+        postFile,
       }}
     >
       {children}

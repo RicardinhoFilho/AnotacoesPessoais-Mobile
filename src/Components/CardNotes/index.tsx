@@ -33,7 +33,7 @@ export function CardNotes({
   function handleNoteModalOpen() {
     setNoteModal(true);
   }
-  
+
   function handleNoteModalClose() {
     setNoteModal(false);
   }
@@ -49,8 +49,8 @@ export function CardNotes({
   return (
     <Container
       invisible={invisible}
-      onLongPress={handleLongPress}
       onPress={handleNoteModalOpen}
+      onLongPress={handleLongPress}
     >
       <Title>{title}</Title>
 

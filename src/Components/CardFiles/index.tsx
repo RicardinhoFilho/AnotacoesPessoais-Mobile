@@ -15,10 +15,10 @@ interface ICardProps {
   file: string;
   id: number;
   title: string;
-  noteId:number;
+  noteId: number;
 }
 
-export function CardFiles({ id, title, file,noteId }: ICardProps) {
+export function CardFiles({ id, title, file, noteId }: ICardProps) {
   const [fileView, setFileView] = useState(false);
   const [modalDangeour, setModalDangeour] = useState(false);
 
@@ -42,7 +42,11 @@ export function CardFiles({ id, title, file,noteId }: ICardProps) {
         />
       </Modal>
       <Modal visible={modalDangeour} animationType={"slide"}>
-        <ModalDangerFile onClose={handleModalDangeour} file={{ id, title,noteId }} />
+        <ModalDangerFile
+          onClose={handleModalDangeour}
+          file={{ id, title }}
+          noteId={noteId}
+        />
       </Modal>
     </Container>
   );

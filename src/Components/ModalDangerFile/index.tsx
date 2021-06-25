@@ -24,22 +24,22 @@ import {
 interface IProps {
   onClose(): void;
   file: IFile;
+
+  noteId: number;
 }
 
 interface IFile {
   title: string;
   id: number;
-  noteId: number;
 }
 
-export function ModalDangerFile({ onClose, file}: IProps) {
-  const { deleteFile, loadFiles, loading } = useFiles();
+export function ModalDangerFile({ onClose, file, noteId }: IProps) {
+  const { deleteFile, loading } = useFiles();
   const [modalUpdate, setModalUpdate] = useState(false);
 
   async function handleDelete() {
     try {
-      await deleteFile(file.id);
-      await loadFiles(file.noteId);
+      await deleteFile(file.id, noteId);
     } catch (error) {
       console.log(error);
       Alert.alert(error.message);

@@ -11,11 +11,11 @@ import {
   Alert,
   View,
   ScrollView,
+  Modal,
 } from "react-native";
 
-import { loggedTypeDataKey } from "../../Services/asyncStorage";
-
-import api from "../../Services/api";
+ 
+import {AddFile} from "../AddFile";
 
 import { useFiles } from "../../hooks/files";
 
@@ -55,11 +55,16 @@ interface IFile {
 
 export function Note({ handleClose, note }: Props) {
   const { loadFiles, loading, files } = useFiles();
+  const [addFileModal, setAddFileModal] = useState(false)
 
   const htmlNote =
     note.annotation[0] === "{"
       ? draftToHtml(JSON.parse(note.annotation))
       : note.annotation;
+
+    function handleFileModal(){
+      setAddFileModal(!addFileModal);
+    }
 
   useEffect(() => {
     loadFiles(note.id);
@@ -74,7 +79,7 @@ export function Note({ handleClose, note }: Props) {
         <Title>{note.title}</Title>
       </Header>
       <FilesView>
-        <FileAddButton >
+        <FileAddButton onPress={handleFileModal}>
           <FileAddText/>
         </FileAddButton>
         {loading ? (
@@ -88,7 +93,7 @@ export function Note({ handleClose, note }: Props) {
                 file={item.file}
                 id={item.id}
                 title={item.title}
-                noteId={item.noteId}
+                noteId={note.id}
               />
             )}
           />
@@ -105,6 +110,10 @@ export function Note({ handleClose, note }: Props) {
           overflowY: "scroll",
         }}
       />
+    <Modal visible={addFileModal}>
+    <AddFile handleClose={handleFileModal} noteId={note.id}/>
+    </Modal>
+
     </>
   );
 }

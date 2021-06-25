@@ -7,6 +7,14 @@ import { FlatList } from "react-native";
 
 import { Feather } from "@expo/vector-icons";
 
+
+interface IFile {
+  id:number;
+  title: string;
+  file:string;
+  noteId:number;
+}
+
 export const Container = styled.ScrollView`
   flex: 1%;
   background-color: ${({ theme }) => theme.colors.secondary};
@@ -43,7 +51,7 @@ export const FilesView = styled.View`
 
   flex-direction: row;
 `;
-export const FilesList = styled(FlatList as new () => FlatList<IFile>).attrs({
+export const FilesList = styled(FlatList as new () => FlatList<any>).attrs({
   showsHorizontalScrollIndicator: false,
   horizontal: true,
 })``;
