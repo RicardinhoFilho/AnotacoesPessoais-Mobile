@@ -5,6 +5,8 @@ import { RectButton } from "react-native-gesture-handler";
 
 import { FlatList } from "react-native";
 
+import { Feather } from "@expo/vector-icons";
+
 export const Container = styled.ScrollView`
   flex: 1%;
   background-color: ${({ theme }) => theme.colors.secondary};
@@ -35,6 +37,11 @@ export const Title = styled.Text`
 
 export const FilesView = styled.View`
   background-color: ${({ theme }) => theme.colors.secondary};
+  
+  padding-top: ${RFValue(10)}px;
+  padding-bottom: ${RFValue(10)}px;
+
+  flex-direction: row;
 `;
 export const FilesList = styled(FlatList as new () => FlatList<IFile>).attrs({
   showsHorizontalScrollIndicator: false,
@@ -46,4 +53,13 @@ export const Loader = styled.ActivityIndicator.attrs({
   size: RFValue(50),
 })`
   margin-bottom: ${RFValue(10)}px;
+`;
+
+export const FileAddButton = styled.TouchableOpacity``;
+
+export const FileAddText = styled(Feather).attrs({
+  name: "paperclip",
+  size: RFValue(30),
+})`
+  margin-left: ${RFValue(10)}px;
 `;

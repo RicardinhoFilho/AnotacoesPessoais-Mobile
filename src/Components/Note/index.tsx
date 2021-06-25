@@ -29,6 +29,8 @@ import {
   Loader,
   FilesView,
   FilesList,
+  FileAddButton,
+  FileAddText,
 } from "./styles";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { FileView } from "../FileView";
@@ -72,6 +74,9 @@ export function Note({ handleClose, note }: Props) {
         <Title>{note.title}</Title>
       </Header>
       <FilesView>
+        <FileAddButton >
+          <FileAddText/>
+        </FileAddButton>
         {loading ? (
           <Loader />
         ) : (
