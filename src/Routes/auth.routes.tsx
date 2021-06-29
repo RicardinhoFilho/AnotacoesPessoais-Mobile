@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { SingIn } from "../Screen/SingIn";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator} from "@react-navigation/stack";
 
 import {useUser} from "../hooks/user";
 

@@ -36,7 +36,7 @@ export const HeaderHandlerView = styled.View`
   align-items: center;
   justify-content: space-between;
 
-  margin-top: ${RFValue(15)}px;
+  margin-top: ${RFValue(35)}px;
   /* margin-left: ${RFValue(50)}px;
   margin-right: ${RFValue(50)}px; */
 `;

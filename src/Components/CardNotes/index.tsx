@@ -51,6 +51,7 @@ export function CardNotes({
       invisible={invisible}
       onPress={handleNoteModalOpen}
       onLongPress={handleLongPress}
+      delayLongPress={2000}
     >
       <Title>{title}</Title>
 

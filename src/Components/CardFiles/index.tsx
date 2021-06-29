@@ -30,7 +30,7 @@ export function CardFiles({ id, title, file, noteId }: ICardProps) {
   }
 
   return (
-    <Container onPress={handleSetFileView} onLongPress={handleModalDangeour}>
+    <Container onPress={handleSetFileView} onLongPress={handleModalDangeour} delayLongPress={2000}>
       <Title>{title}</Title>
 
       <Modal visible={fileView} animationType={"slide"}>

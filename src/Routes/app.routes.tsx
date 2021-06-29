@@ -1,6 +1,7 @@
 import React from "react";
 import { Platform } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
 import { RFValue } from "react-native-responsive-fontsize";
 
 import { MaterialIcons } from "@expo/vector-icons";
@@ -15,6 +16,18 @@ const { Navigator, Screen } = createBottomTabNavigator();
 import { Repositories } from "../Screen/Repositories";
 import { Search } from "../Screen/Search";
 import { Account } from "../Screen/Account";
+import { NotesModal } from "../Components/NotesModal";
+
+function RepositoriesNavigation() {
+  const { Navigator, Screen } = createStackNavigator();
+
+  return (
+    <Navigator headerMode="none">
+      <Screen name="Repositories" component={Repositories} />
+      <Screen name="Note" component={NotesModal} />
+    </Navigator>
+  );
+}
 
 export function AppRoutes() {
   return (
@@ -30,8 +43,8 @@ export function AppRoutes() {
       }}
     >
       <Screen
-        name="Repositórios"
-        component={Repositories}
+        name="Home"
+        component={RepositoriesNavigation}
         options={{
           tabBarIcon: ({ size, color }) => (
             <MaterialIcons

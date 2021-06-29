@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 import { Alert, Keyboard, Modal, TouchableWithoutFeedback } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
+import {WebView} from "react-native-webview"
 
 import { useRepositories } from "../../hooks/repositories";
 
 import { Editor } from "react-draft-wysiwyg";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {tokenDataKey} from "../../Services/asyncStorage"; 
 
 // import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 
@@ -122,54 +125,21 @@ export function NoteOperations({ note, onClose }: IRepositoryOperations) {
   }
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <Container>
-        <Header>
-          <ReturnIcon
-            onPress={() => {
-              //console.log("cliqueii");
-              onClose();
-            }}
-          >
-            <AntDesign name="left" size={20} color="white" />
-          </ReturnIcon>
-          <HandleTitleView>
-            <Title>{note ? "Atualizar Nota" : "Cadastrar Nota"}</Title>
-          </HandleTitleView>
-        </Header>
-        <Form>
-          <Fields>
-            <InputForm
-              value={title}
-              placeholder="Título"
-              onChangeText={setTitle}
-              onBlur={handleTitleError}
-            />
-            <Attention>{titleError}</Attention>
-
-            <InputForm
-              value={description}
-              placeholder="Descrição"
-              autoCorrect={false}
-              onChangeText={setDescription}
-              onBlur={handleDescriptionError}
-            />
-            <Attention>{descriptionError}</Attention>
-
-            {loading && <Loader />}
-
-            <SubmitButton onPress={handleRegister}>
-              <ButtonText>Confirmar</ButtonText>
-            </SubmitButton>
-          </Fields>
-        </Form>
-
-        <Modal visible={false}>
-          <RichEditor handleClose={handleSetRichText} />
-        </Modal>
-      </Container>
-    </TouchableWithoutFeedback>
+    <>
+    <Header>
+      <ReturnIcon
+        onPress={() => {
+          //console.log("cliqueii");
+          onClose();
+        }}
+      >
+        <AntDesign name="left" size={20} color="white" />
+      </ReturnIcon>
+      <HandleTitleView>
+        <Title>{note ? "Atualizar Nota" : "Cadastrar Nota"}</Title>
+      </HandleTitleView>
+    </Header>
+    <WebView source={{uri:`192.168.1.58:3000/mobile_editor/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjI0OTAzOTczLCJleHAiOjE2MjQ5Mzk5NzN9.SW1N6tkkbeeRYcrA9nVlfXuBqvOiKk5bhhcmKbUaPeM/56` }}/>
+    </>
   );
-
-  // RichEditor
 }

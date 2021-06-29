@@ -12,13 +12,14 @@ import { useNotes } from "../../hooks/notes";
 import { NotesModal } from "../NotesModal";
 
 interface ICardProps {
-  id: string;
+  id: number;
   title: string;
   description?: string;
   invisible: boolean;
   showDangeourButtons?: boolean;
   setFilterIsPress(option: boolean): boolean;
   setFilterValue(option: string): boolean;
+  navigation: any;
   /*filterIsPress={filterIsPress}
                 filterValue={filterValue} */
 }
@@ -30,8 +31,8 @@ export function Card({
   invisible,
   showDangeourButtons,
   setFilterIsPress,
-  setFilterValue
-  
+  setFilterValue,
+  navigation,
 }: ICardProps) {
   const [modalOpen, setModalOpen] = useState(false);
   const [dangerRepositoryOperationModal, setDangerRepositoryOperationModal] =
@@ -44,9 +45,12 @@ export function Card({
   }
 
   async function handleOpenNotesModal() {
-    setFilterIsPress(true);
-    setFilterValue(title);
-    setNotesModal(true);
+    navigation.navigate("Note", {
+      onClose: handleCloseNotesModal,
+      repositoryTitle: title,
+      repositoryId: id,
+      repositoryDescription: description,
+    });
   }
 
   async function handleCloseNotesModal() {
@@ -62,13 +66,14 @@ export function Card({
 
   useEffect(() => {
     console.log(title);
-  },[])
+  }, []);
 
   return (
     <Container
       invisible={invisible}
       onLongPress={handleLongPress}
       onPress={handleOpenNotesModal}
+      delayLongPress={2000}
     >
       <Title>{title}</Title>
 
@@ -91,14 +96,14 @@ export function Card({
         />
       </Modal>
 
-      <Modal visible={notesModal} animationType={"slide"}>
+      {/* <Modal visible={notesModal} animationType={"slide"}>
         <NotesModal
           onClose={handleCloseNotesModal}
           repositoryTitle={title}
           repositoryId={id}
           repositoryDescription={description}
-        />
-      </Modal>
+        /> 
+      </Modal>*/}
     </Container>
   );
 }

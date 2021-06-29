@@ -35,6 +35,8 @@ interface INotesModalProps {
   repositoryTitle: string;
   repositoryId: string;
   repositoryDescription?: string;
+  navigation:any;
+  route:any;
 
   onClose(): void;
   setContinueVirtualize(option: boolean): void;
@@ -52,6 +54,8 @@ export function NotesModal({
   repositoryId,
   onClose,
   repositoryDescription,
+  navigation,
+  route
 }: INotesModalProps) {
   const { handleSetRepositoryId, notes, loading } = useNotes();
 
@@ -69,7 +73,7 @@ export function NotesModal({
   }
 
   function setRepositoryId() {
-    handleSetRepositoryId(Number(repositoryId));
+    handleSetRepositoryId(Number(route.params.repositoryId));
   }
   useEffect(() => {
     setRepositoryId();
@@ -79,12 +83,12 @@ export function NotesModal({
     <Container>
       <Header>
         <HeaderHandlerView>
-          <ReturnButton onPress={onClose}>
+          <ReturnButton onPress={()=>{navigation.goBack()}}>
             <ReturnIcon name="arrowleft" />
           </ReturnButton>
 
           <RepositoryInformation>
-            <RepositoryTitle>{repositoryTitle}:</RepositoryTitle>
+            <RepositoryTitle>{route.params.repositoryTitle}:</RepositoryTitle>
             {/* <NotesCount> {notes.length} anotações</NotesCount>  */}
           </RepositoryInformation>
         </HeaderHandlerView>
@@ -93,7 +97,7 @@ export function NotesModal({
       <NotesView>
         <RepositoryDescription>
           <RepositoryDescriptionText>
-            {repositoryDescription}
+            {route.params.repositoryDescription}
           </RepositoryDescriptionText>
         </RepositoryDescription>
 

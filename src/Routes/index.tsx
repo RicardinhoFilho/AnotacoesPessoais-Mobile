@@ -21,7 +21,7 @@ export function Routes() {
   }, [userIsLogged]);
 
   return (
-    <NavigationContainer>
+    <NavigationContainer >
       {userLogged ? <AppRoutes /> : <AuthRoutes />}
     </NavigationContainer>
   );

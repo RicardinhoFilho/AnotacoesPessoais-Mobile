@@ -26,10 +26,15 @@ import {
 import { useUser } from "../../hooks/user";
 import { useRepositories } from "../../hooks/repositories";
 import { Card } from "../../Components/Card";
+import { useNavigation } from "@react-navigation/native";
+import { NavigationContainer, Link } from "@react-navigation/native";
+
 
 import { handleFilter } from "../../Utils/handleFilter";
 import { Alert, Modal, TouchableWithoutFeedback } from "react-native";
 import { RepositoryOperations } from "../../Components/RepositoryOperations";
+
+import { Routes } from "../../Routes";
 
 interface IUser {
   name?: string;
@@ -39,7 +44,8 @@ interface IUser {
   token: string;
 }
 
-export function Repositories() {
+export function Repositories({navigation}:any) {
+  
   const { getRepositories, repositories } = useRepositories();
   const { user, signOut } = useUser();
 
@@ -65,8 +71,8 @@ export function Repositories() {
     getRepositories();
   }, []);
 
-  function testa(){
-    console.log("teste")
+  function testa() {
+    console.log("teste");
   }
 
   return (
@@ -122,7 +128,6 @@ export function Repositories() {
         </RepositoriesViewHeader>
         {repositories && (
           <RepositoriesList
-          
             data={repositories}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
@@ -138,6 +143,7 @@ export function Repositories() {
                 description={item.description}
                 setFilterIsPress={setFilterIsPress}
                 setFilterValue={setFilterValue}
+                navigation={navigation}
               />
             )}
           />
