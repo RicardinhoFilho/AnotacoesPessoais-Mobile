@@ -73,7 +73,7 @@ export const Icon = styled(Feather)`
 
 export const SearchContainer = styled.View`
   align-items: center;
-  margin-top: -${RFPercentage(20)}px;
+  margin-top: -${RFPercentage(25)}px;
 `;
 
 export const SearchTextInput = styled.TextInput`

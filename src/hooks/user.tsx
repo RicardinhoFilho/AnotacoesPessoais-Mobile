@@ -68,6 +68,8 @@ function UserProvider({ children }: IAuthProviderProps) {
     const password = await AsyncStorage.getItem(passwordDataKey);
     const token = await AsyncStorage.getItem(tokenDataKey);
 
+    
+
     if (email && password && token && photo && name) {
       setUser({ name, photo, email, password, token });
     } else if (email && password && token) {
@@ -94,7 +96,7 @@ function UserProvider({ children }: IAuthProviderProps) {
       await AsyncStorage.setItem(tokenDataKey, token);
       api.defaults.headers.Authorization = `Bearer ${token}`;
 
-      setUser({ name, photo, email, password });
+      setUser({ name, photo, email, password, token });
       //console.log(user);
       setUserIsLogged(true);
     } catch (error) {

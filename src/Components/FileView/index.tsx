@@ -16,11 +16,12 @@ interface IFileProps {
 export function FileView({ file, id, title, handleClose }: IFileProps) {
   function defineLink() {
     const extension = checkExtension(file.toLowerCase());
-    if (extension === "pdf" || extension === "docx" || extension === "pptx") {
-      return {option:false, extension};
+    if (extension === "png" || extension === "jpg" || extension === "jpeg" || extension ==="svg") {
+      return {option:true, extension};
+     
     }
 
-    return {option:true, extension};
+    return {option:false, extension};
   }
 
   const option = defineLink();

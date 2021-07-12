@@ -34,9 +34,10 @@ export const Header = styled.View`
 export const HeaderHandlerView = styled.View`
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 
   margin-top: ${RFValue(35)}px;
+  /* padding-bottom:${RFValue(10)}px; */
   /* margin-left: ${RFValue(50)}px;
   margin-right: ${RFValue(50)}px; */
 `;
@@ -58,22 +59,22 @@ export const RepositoryTitle = styled.Text`
 `;
 
 export const NotesCount = styled.Text`
-  font-family: ${({ theme }) => theme.fonts.medium};
-  font-size: ${RFValue(13)}px;
+  font-family: ${({ theme }) => theme.fonts.bold};
+  font-size: ${RFValue(15)}px;
 
   color: ${({ theme }) => theme.colors.light};
 `;
 
 export const RepositoryInformation = styled.View`
-  align-items: center;
-  display: flex;
+  
 
   /* min-width: ${RFValue(330)}px; */
   max-width: ${RFValue(300)}px;
 `;
 
 export const RepositoryDescription = styled.View`
-  margin-bottom: ${RFValue(15)}px;
+margin-top:${RFValue(10)}px;
+  margin-bottom: ${RFValue(1)}px;
   /* background-color: red; */
   align-items: center;
   width: 100%;

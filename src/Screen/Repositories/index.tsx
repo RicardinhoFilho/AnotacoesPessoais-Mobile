@@ -108,7 +108,9 @@ export function Repositories({navigation}:any) {
           ) : (
             <>
               <HandleView>
-                <AddFolderButton onPress={handleAddRepositoryModalOpen}>
+                <AddFolderButton onPress={()=>{
+                  navigation.navigate("RepositoryOperations",{repository:null});
+                }}>
                   <AddFolderIcon name="addfolder" />
                 </AddFolderButton>
               </HandleView>
@@ -150,9 +152,7 @@ export function Repositories({navigation}:any) {
         )}
       </RepositoriesView>
 
-      <Modal visible={addRepositoryModalOpen}>
-        <RepositoryOperations onClose={handleAddRepositoryModalOpen} />
-      </Modal>
+    
     </Container>
   );
 }

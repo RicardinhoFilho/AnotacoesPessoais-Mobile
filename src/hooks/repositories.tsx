@@ -27,7 +27,7 @@ interface IRepositoryContextData {
   repositories: IRepository[];
   getRepositories(): Promise<void>;
   addRepository(repository: IRepository): Promise<void>;
-  deleteRepository(title: string, id: string): Promise<void>;
+  deleteRepository(title: string, id: number): Promise<void>;
   updateRepository(
     id: string,
     oldTitle: string,

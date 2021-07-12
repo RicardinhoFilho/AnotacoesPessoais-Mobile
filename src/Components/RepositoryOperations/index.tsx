@@ -21,8 +21,8 @@ import {
 } from "./styles";
 
 interface IRepositoryOperations {
-  repository?: IRepository;
-  onClose(): void;
+  navigation: any;
+  route: any;
 }
 
 interface ICreate {}
@@ -38,12 +38,16 @@ interface IRepository {
 }
 
 export function RepositoryOperations({
-  repository,
-  onClose,
+  route,
+  navigation,
 }: IRepositoryOperations) {
   const { addRepository, updateRepository } = useRepositories();
 
   const [loading, setLoading] = useState(false);
+
+  const repository: IRepository | undefined = route.params.repository
+    ? route.params.repository
+    : undefined;
 
   const [title, setTitle] = useState(() => {
     if (repository) {
@@ -96,15 +100,20 @@ export function RepositoryOperations({
     setLoading(true);
     handleDescriptionError();
     handleTitleError();
-    onClose();
 
     if (!titleError && !descriptionError) {
       try {
         if (repository) {
-          await updateRepository(repository.id, repository.title, title, description) 
+          await updateRepository(
+            repository.id,
+            repository.title,
+            title,
+            description
+          );
         } else {
           await addRepository({ title, description });
         }
+        navigation.goBack();
       } catch (error) {
         console.log(error);
         Alert.alert(error.message);
@@ -118,17 +127,18 @@ export function RepositoryOperations({
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <Container>
         <Header>
+
+        <HandleTitleView>
           <ReturnIcon
             onPress={() => {
-              //console.log("cliqueii");
-              onClose();
+              navigation.goBack();
             }}
           >
-            <AntDesign name="left" size={20} color="white" />
+            <AntDesign name="arrowleft" size={20} color="white" />
           </ReturnIcon>
-          <HandleTitleView>
             <Title>
-              {repository ? "Atualizar Repositório" : "Cadastrar Repositório"}
+               {repository ? "Atualizar Repositório" : "Cadastrar Repositório"} 
+              
             </Title>
           </HandleTitleView>
         </Header>

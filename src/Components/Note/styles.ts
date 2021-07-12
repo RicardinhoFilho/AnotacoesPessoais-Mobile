@@ -7,12 +7,11 @@ import { FlatList } from "react-native";
 
 import { Feather } from "@expo/vector-icons";
 
-
 interface IFile {
-  id:number;
+  id: number;
   title: string;
-  file:string;
-  noteId:number;
+  file: string;
+  noteId: number;
 }
 
 export const Container = styled.ScrollView`
@@ -32,20 +31,21 @@ export const Header = styled.View`
 `;
 
 export const ReturnIcon = styled.TouchableOpacity`
-  margin-bottom: ${RFValue(40)}px;
+  /* margin-bottom: ${RFValue(40)}px; */
 `;
 export const Title = styled.Text`
   color: ${({ theme }) => theme.colors.light};
   font-family: ${({ theme }) => theme.fonts.regular};
   font-size: ${RFValue(20)};
-  margin-top: ${RFValue(20)};
+  /* margin-top: ${RFValue(20)};
 
-  margin-left: ${RFPercentage(12)}px;
+  margin-left: ${RFPercentage(12)}px; */
+  padding-left: ${RFValue(10)}px;
 `;
 
 export const FilesView = styled.View`
   background-color: ${({ theme }) => theme.colors.secondary};
-  
+
   padding-top: ${RFValue(10)}px;
   padding-bottom: ${RFValue(10)}px;
 
@@ -70,4 +70,14 @@ export const FileAddText = styled(Feather).attrs({
   size: RFValue(30),
 })`
   margin-left: ${RFValue(10)}px;
+`;
+
+export const LoadingNoteDiv = styled.View`
+  background-color: ${({ theme }) => theme.colors.secondary};
+`;
+
+export const HandleTitle = styled.View`
+  flex-direction:row;
+  align-items: center;
+  justify-content:center;
 `;

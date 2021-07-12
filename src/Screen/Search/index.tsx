@@ -40,7 +40,7 @@ interface IRepository {
   description?: string;
 }
 
-export function Search() {
+export function Search({navigation}:any) {
   const { user, signOut } = useUser();
   const [search, setSearch] = useState("");
   const [filterIsPress, setFilterIsPress] = useState(false);
@@ -55,7 +55,8 @@ export function Search() {
       const response = await api.post("/api/search", { search });
       setRepositories(response.data.repositories);
       setNotes(response.data.notes);
-      console.log(notes);
+      setFilterValue("");
+      //console.log(notes);
     } catch (error) {}
     setLoading(false);
   }
@@ -114,8 +115,7 @@ export function Search() {
                 id={item.id}
                 title={item.title}
                 description={item.description}
-                setFilterIsPress={setFilterIsPress}
-                setFilterValue={setFilterValue}
+                navigation={navigation}
               />
             )}
           />

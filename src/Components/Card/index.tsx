@@ -45,6 +45,7 @@ export function Card({
   }
 
   async function handleOpenNotesModal() {
+    // console.log
     navigation.navigate("Note", {
       onClose: handleCloseNotesModal,
       repositoryTitle: title,
@@ -64,9 +65,7 @@ export function Card({
     setDangerRepositoryOperationModal(true);
   }
 
-  useEffect(() => {
-    console.log(title);
-  }, []);
+ 
 
   return (
     <Container
@@ -93,6 +92,7 @@ export function Card({
           title={title}
           description={description}
           id={id}
+          navigation={navigation}
         />
       </Modal>
 

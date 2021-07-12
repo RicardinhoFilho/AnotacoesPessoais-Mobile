@@ -28,6 +28,7 @@ interface INotesContextData {
   deleteNote(id: number, title: string): void;
   notes: INotes[];
   loading: boolean;
+  reload(): Promise<void>;
 }
 
 interface INotes {
@@ -72,7 +73,9 @@ function NotesProvider({ children }: IAuthProviderProps) {
       throw new Error("Não foi possível carregar as notas");
     }
   }
-
+  async function reload() {
+    await getNotes(repositoryId);
+  }
   useEffect(() => {
     if (repositoryId > 0) {
       getNotes(repositoryId);
@@ -86,6 +89,7 @@ function NotesProvider({ children }: IAuthProviderProps) {
         notes,
         loading,
         deleteNote,
+        reload,
       }}
     >
       {children}

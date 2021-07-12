@@ -38,7 +38,7 @@ interface IFileProps {
 }
 
 interface IPostFile {
-  file: IFileProps;
+  file: Blob;
   title: string;
 
   noteId: number;
@@ -81,6 +81,9 @@ function FilesProvider({ children }: IAuthProviderProps) {
   }
 
   async function postFile({ file, title, noteId }: IPostFile) {
+    console.log(file)
+    console.log(noteId);
+    console.log(title);
     try {
       setLoading(true);
       const dataform = new FormData();

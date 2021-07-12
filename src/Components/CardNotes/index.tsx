@@ -16,6 +16,7 @@ interface ICardProps {
   annotation: string;
   invisible: boolean;
   showDangeourButtons?: boolean;
+  navigation:any;
 }
 
 export function CardNotes({
@@ -25,6 +26,7 @@ export function CardNotes({
   annotation,
   invisible,
   showDangeourButtons,
+  navigation
 }: ICardProps) {
   const [dangerNoteModalOperation, setDangerNoteModalOperation] =
     useState(false);
@@ -51,7 +53,7 @@ export function CardNotes({
       invisible={invisible}
       onPress={handleNoteModalOpen}
       onLongPress={handleLongPress}
-      delayLongPress={2000}
+      delayLongPress={3000}
     >
       <Title>{title}</Title>
 
@@ -65,6 +67,7 @@ export function CardNotes({
         <ModalDangerNoteoOperation
           note={{ title, description, annotation, id }}
           onClose={handleCLoseDangerNoteModalOperation}
+          navigation={navigation}
         />
       </Modal>
 

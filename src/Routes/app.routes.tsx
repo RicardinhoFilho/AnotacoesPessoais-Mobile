@@ -13,21 +13,14 @@ import theme from "../global/styles/theme";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
-import { Repositories } from "../Screen/Repositories";
+
 import { Search } from "../Screen/Search";
 import { Account } from "../Screen/Account";
-import { NotesModal } from "../Components/NotesModal";
+import { RepositoriesNavigation } from "./routes.repositories";
+import { SearchNavigation } from "./search.routes/index.routes";
 
-function RepositoriesNavigation() {
-  const { Navigator, Screen } = createStackNavigator();
 
-  return (
-    <Navigator headerMode="none">
-      <Screen name="Repositories" component={Repositories} />
-      <Screen name="Note" component={NotesModal} />
-    </Navigator>
-  );
-}
+
 
 export function AppRoutes() {
   return (
@@ -57,7 +50,7 @@ export function AppRoutes() {
       />
       <Screen
         name="Pesquisar"
-        component={Search}
+        component={SearchNavigation}
         options={{
           tabBarIcon: ({ size, color }) => (
             <Feather name="search" size={size} color={color} />

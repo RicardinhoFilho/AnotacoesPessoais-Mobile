@@ -29,14 +29,14 @@ import {
 import { useNotes } from "../../hooks/notes";
 import { CardNotes } from "../CardNotes";
 import { Modal } from "react-native";
-import{NoteOperations} from "../NoteOperations"
+import { NoteOperations } from "../NoteOperations";
 
 interface INotesModalProps {
   repositoryTitle: string;
-  repositoryId: string;
+  repositoryId: number;
   repositoryDescription?: string;
-  navigation:any;
-  route:any;
+  navigation: any;
+  route: any;
 
   onClose(): void;
   setContinueVirtualize(option: boolean): void;
@@ -55,16 +55,17 @@ export function NotesModal({
   onClose,
   repositoryDescription,
   navigation,
-  route
+  route,
 }: INotesModalProps) {
   const { handleSetRepositoryId, notes, loading } = useNotes();
-
+const repId = (Number(route.params.repositoryId))
   const [filterIsPress, setFilterIsPress] = useState(false);
   const [filterValue, setFilterValue] = useState("");
-  const [addNote, setAddNote] = useState(false);
+  //const [addNote, setAddNote] = useState(false);
 
   function handleAddNote() {
-    setAddNote(!addNote);
+    //setAddNote(!addNote);
+    navigation.navigate("NoteOperations",{repositoryId:repId, noteId:0})
   }
 
   function handleSetFilterIsPress() {
@@ -73,9 +74,10 @@ export function NotesModal({
   }
 
   function setRepositoryId() {
-    handleSetRepositoryId(Number(route.params.repositoryId));
+    handleSetRepositoryId(repId);
   }
   useEffect(() => {
+     console.log(repId)
     setRepositoryId();
   }, []);
 
@@ -83,10 +85,14 @@ export function NotesModal({
     <Container>
       <Header>
         <HeaderHandlerView>
-          <ReturnButton onPress={()=>{navigation.goBack()}}>
+          <ReturnButton
+            onPress={() => {
+              navigation.goBack();
+            }}
+          >
             <ReturnIcon name="arrowleft" />
           </ReturnButton>
-
+            
           <RepositoryInformation>
             <RepositoryTitle>{route.params.repositoryTitle}:</RepositoryTitle>
             {/* <NotesCount> {notes.length} anotações</NotesCount>  */}
@@ -152,6 +158,7 @@ export function NotesModal({
                   title={item.title}
                   description={item.description}
                   annotation={item.annotation}
+                  navigation={navigation}
                 />
               )}
             />
@@ -159,9 +166,9 @@ export function NotesModal({
         )}
       </NotesView>
 
-      <Modal visible={addNote}>
-        <NoteOperations onClose={handleAddNote} />
-      </Modal>
+      {/* <Modal visible={addNote}>
+        <NoteOperations onClose={handleAddNote} repId={repId} />
+      </Modal> */}
     </Container>
   );
 }

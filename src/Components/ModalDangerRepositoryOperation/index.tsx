@@ -25,7 +25,8 @@ interface IProps {
   onClose(): void;
   title: string;
   description?: string;
-  id: string;
+  id: number;
+  navigation:any;
 }
 
 export function ModalDangerRepositoryOperation({
@@ -33,6 +34,7 @@ export function ModalDangerRepositoryOperation({
   title,
   description,
   id,
+  navigation
 }: IProps) {
   const { deleteRepository } = useRepositories();
 
@@ -67,17 +69,22 @@ export function ModalDangerRepositoryOperation({
             <TrashButton onPress={handleDelete}>
               <TrashIcon name="trash-2" />
             </TrashButton>
-            <EditButton onPress={handleUpdate}>
+            <EditButton onPress={()=>{
+              const repository = {id,title,description};
+              console.log(repository)
+                navigation.navigate("RepositoryOperations", {repository: repository})
+             
+            }}>
               <EditIcon name="edit-3" />
             </EditButton>
           </ButtonConatiner>
         </Modal>
-        <UpdateModal visible={modalUpdate}>
+        {/* <UpdateModal visible={modalUpdate}>
           <RepositoryOperations
             repository={{ title, description, id }}
             onClose={onClose}
           />
-        </UpdateModal>
+        </UpdateModal> */}
       </Container>
     </TouchableWithoutFeedback>
   );

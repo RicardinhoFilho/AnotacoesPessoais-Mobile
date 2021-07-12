@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { WebView } from "react-native-webview";
+import HTMLView from 'react-native-htmlview';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { CardFiles } from "../CardFiles";
@@ -31,6 +32,8 @@ import {
   FilesList,
   FileAddButton,
   FileAddText,
+  LoadingNoteDiv,
+  HandleTitle
 } from "./styles";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { FileView } from "../FileView";
@@ -56,6 +59,7 @@ interface IFile {
 export function Note({ handleClose, note }: Props) {
   const { loadFiles, loading, files } = useFiles();
   const [addFileModal, setAddFileModal] = useState(false)
+  const [loadingNote, setLoadingNote] = useState(true);
 
   const htmlNote =
     note.annotation[0] === "{"
@@ -73,10 +77,12 @@ export function Note({ handleClose, note }: Props) {
   return (
     <>
       <Header>
+        <HandleTitle>
         <ReturnIcon onPress={handleClose}>
-          <AntDesign name="left" size={20} color="white" />
+          <AntDesign name="arrowleft" size={RFValue(24)} color="white" />
         </ReturnIcon>
         <Title>{note.title}</Title>
+        </HandleTitle>
       </Header>
       <FilesView>
         <FileAddButton onPress={handleFileModal}>
@@ -99,7 +105,14 @@ export function Note({ handleClose, note }: Props) {
           />
         )}
       </FilesView>
-      <WebView
+      <LoadingNoteDiv>
+      { loadingNote && <Loader />}
+      </LoadingNoteDiv> 
+      <>
+       <WebView
+       originWhitelist={['*']}
+       automaticallyAdjustContentInsets={false}
+        onLoad={()=>{setLoadingNote(false)}}
         source={{
           html: `${htmlNote}`,
         }}
@@ -109,7 +122,11 @@ export function Note({ handleClose, note }: Props) {
           maxWidth: RFPercentage(100),
           overflowY: "scroll",
         }}
-      />
+      /> 
+      {/* <HTMLView
+        value={htmlNote}
+      /> */}
+      </>
     <Modal visible={addFileModal}>
     <AddFile handleClose={handleFileModal} noteId={note.id}/>
     </Modal>

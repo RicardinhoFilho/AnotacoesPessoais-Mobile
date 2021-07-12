@@ -53,6 +53,7 @@ export function AddFile({ handleClose, noteId }: Props) {
   const [titleIsValid, setTitleIsValid] = useState("");
 
   const pickDocument = async () => {
+    var fileToUpload;
     let result = await DocumentPicker.getDocumentAsync({
       type: "*/*",
       copyToCacheDirectory: true,
@@ -61,24 +62,26 @@ export function AddFile({ handleClose, noteId }: Props) {
         let { name, size, uri } = response;
         let nameParts = name.split(".");
         let fileType = nameParts[nameParts.length - 1];
-        var fileToUpload = {
+        fileToUpload = {
           name: name,
           size: size,
           uri: uri,
           type: "application/" + fileType,
         };
         //console.log(fileToUpload, "...............file");
-        setFile(fileToUpload);
       }
     });
-    // console.log(result);
-    console.log(file);
+
+    if (fileToUpload) {
+      setFile(fileToUpload);
+    }
   };
 
   const postDocument = async () => {
     handleTitleIsValid();
     if (title.length > 0) {
-      handleClose();
+      //handleClose();
+      // console.log(file, "este");
       postFile({ file, title, noteId });
     }
   };
@@ -109,9 +112,7 @@ export function AddFile({ handleClose, noteId }: Props) {
             />
             <Attention>{titleIsValid}</Attention>
 
-            <ImageFeedback>
-              {file.name}
-            </ImageFeedback>
+            <ImageFeedback>{file.name}</ImageFeedback>
 
             <SubmitButton onPress={pickDocument}>
               <ButtonText>Escolher Imagem</ButtonText>

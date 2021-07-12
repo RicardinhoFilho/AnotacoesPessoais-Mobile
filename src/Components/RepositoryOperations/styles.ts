@@ -20,12 +20,13 @@ export const Header = styled.View`
   padding: ${RFValue(20)}px;
 `;
 export const ReturnIcon = styled.TouchableOpacity`
-  margin-bottom: -${RFValue(30)}px;
+  
 `;
 export const Title = styled.Text`
   color: ${({ theme }) => theme.colors.light};
   font-family: ${({ theme }) => theme.fonts.regular};
-  font-size: ${RFValue(20)};
+  font-size: ${RFValue(24)};
+  padding-left: ${RFValue(10)}px;
 `;
 export const Form = styled.View`
   flex: 1%;
@@ -86,7 +87,7 @@ export const HandleIconView = styled.View`
 `;
 export const HandleTitleView = styled.View`
   padding: ${RFValue(20)}px;
+  flex-direction: row;
   align-items: center;
-
-  margin-bottom: ${RFValue(30)}px;
+  justify-content:center;
 `;

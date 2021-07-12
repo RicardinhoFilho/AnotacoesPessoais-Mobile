@@ -6,6 +6,7 @@ import {
 } from "react-native";
 
 import { useNotes } from "../../hooks/notes";
+import { NoteOperations } from "../NoteOperations";
 
 import {
   Container,
@@ -22,23 +23,22 @@ import {
 
 interface IProps {
   onClose(): void;
- note:INote;
+  note: INote;
+
+  navigation:any;
 }
 
-interface INote{
+interface INote {
   title: string;
   description?: string;
   annotation: string;
   id: number;
 }
 
-export function ModalDangerNoteoOperation({
-  onClose,
-  note
-}: IProps) {
+export function ModalDangerNoteoOperation({ onClose, note, navigation }: IProps) {
   const { deleteNote, loading } = useNotes();
 
-  const [modalUpdate, setModalUpdate] = useState(false);
+ 
 
   async function handleDelete() {
     try {
@@ -51,7 +51,7 @@ export function ModalDangerNoteoOperation({
   }
 
   function handleUpdate() {
-    setModalUpdate(true);
+    navigation.navigate("NoteOperations",{repositoryId:0, noteId:note.id});
   }
 
   return (
@@ -71,10 +71,7 @@ export function ModalDangerNoteoOperation({
           </ButtonConatiner>
         </Modal>
         {/* <UpdateModal visible={modalUpdate}>
-          <RepositoryOperations
-            repository={{ title, description, id }}
-            onClose={onClose}
-          />
+          <NoteOperations onClose={handleUpdate} noteId={note.id} />
         </UpdateModal> */}
       </Container>
     </TouchableWithoutFeedback>
