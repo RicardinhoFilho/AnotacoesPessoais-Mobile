@@ -84,7 +84,7 @@ export function SinsoftRegister({ handleClose, handleNewAccount }: Props) {
       <Container>
         <Header>
           <ReturnIcon onPress={handleClose}>
-            <AntDesign name="left" size={20} color="white" />
+            <AntDesign name="arrowleft" size={20} color="white" />
           </ReturnIcon>
           <Title>Entrar com Sinsoft</Title>
         </Header>

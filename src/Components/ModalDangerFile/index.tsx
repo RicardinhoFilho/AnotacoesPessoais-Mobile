@@ -55,16 +55,16 @@ export function ModalDangerFile({ onClose, file, noteId }: IProps) {
     <TouchableWithoutFeedback onPress={onClose}>
       <Container>
         <Modal>
-          <Title>Deseja Excluir ou Editar</Title>
+          <Title>Deseja Realmente Excluir</Title>
           <NoteTitle>{file.title}</NoteTitle>
           {loading && <Loader />}
           <ButtonConatiner>
             <TrashButton onPress={handleDelete}>
               <TrashIcon name="trash-2" />
             </TrashButton>
-            <EditButton onPress={handleUpdate}>
+            {/* <EditButton onPress={handleUpdate}>
               <EditIcon name="edit-3" />
-            </EditButton>
+            </EditButton> */}
           </ButtonConatiner>
         </Modal>
         {/* <UpdateModal visible={modalUpdate}>

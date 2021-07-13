@@ -26,6 +26,7 @@ export const Header = styled.View`
   flex-direction: row;
 
   align-items: center;
+  justify-content:center;
 
   padding: ${RFValue(20)}px;
 `;
@@ -36,7 +37,7 @@ export const ReturnIcon = styled.TouchableOpacity`
 export const Title = styled.Text`
   color: ${({ theme }) => theme.colors.light};
   font-family: ${({ theme }) => theme.fonts.regular};
-  font-size: ${RFValue(20)};
+  font-size: ${RFValue(24)};
   /* margin-top: ${RFValue(20)};
 
   margin-left: ${RFPercentage(12)}px; */
@@ -77,6 +78,11 @@ export const LoadingNoteDiv = styled.View`
 `;
 
 export const HandleTitle = styled.View`
+
+  padding:${RFValue(5)}px;
+
+  margin-top: ${RFValue(20)};
+
   flex-direction:row;
   align-items: center;
   justify-content:center;

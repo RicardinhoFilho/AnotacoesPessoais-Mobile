@@ -35,7 +35,11 @@ export default function App() {
   const userContext = useUser();
 
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return (
+      <View>
+        <AppLoading />
+      </View>
+    );
   }
 
   return (

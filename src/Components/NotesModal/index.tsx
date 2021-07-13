@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import { handleFilter } from "../../Utils/handleFilter";
-
+import { useFocusEffect } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   Container,
   Header,
@@ -30,6 +31,8 @@ import { useNotes } from "../../hooks/notes";
 import { CardNotes } from "../CardNotes";
 import { Modal } from "react-native";
 import { NoteOperations } from "../NoteOperations";
+import { titleFormattedDataKey } from "../../Services/asyncStorage";
+import { capitalize } from "../../Utils/capitalize";
 
 interface INotesModalProps {
   repositoryTitle: string;
@@ -58,14 +61,15 @@ export function NotesModal({
   route,
 }: INotesModalProps) {
   const { handleSetRepositoryId, notes, loading } = useNotes();
-const repId = (Number(route.params.repositoryId))
+  const repId = Number(route.params.repositoryId);
   const [filterIsPress, setFilterIsPress] = useState(false);
   const [filterValue, setFilterValue] = useState("");
+  const [formatedTitle, setFormatedTitle] = useState(false);
   //const [addNote, setAddNote] = useState(false);
 
   function handleAddNote() {
     //setAddNote(!addNote);
-    navigation.navigate("NoteOperations",{repositoryId:repId, noteId:0})
+    navigation.navigate("NoteOperations", { repositoryId: repId, noteId: 0 });
   }
 
   function handleSetFilterIsPress() {
@@ -77,9 +81,21 @@ const repId = (Number(route.params.repositoryId))
     handleSetRepositoryId(repId);
   }
   useEffect(() => {
-     console.log(repId)
+    //console.log(repId)
     setRepositoryId();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      async function getTitleFormatedState() {
+        const titleState = await AsyncStorage.getItem(titleFormattedDataKey);
+        console.log(titleState);
+        setFormatedTitle(Boolean(titleState === "true")); //Verificando se precisamos formatar titulos
+      }
+      getTitleFormatedState();
+      // console.log(formatedTitle)
+    }, [])
+  );
 
   return (
     <Container>
@@ -92,9 +108,14 @@ const repId = (Number(route.params.repositoryId))
           >
             <ReturnIcon name="arrowleft" />
           </ReturnButton>
-            
+
           <RepositoryInformation>
-            <RepositoryTitle>{route.params.repositoryTitle}:</RepositoryTitle>
+            <RepositoryTitle>
+              {formatedTitle
+                ? capitalize(route.params.repositoryTitle)
+                : route.params.repositoryTitle}
+              :
+            </RepositoryTitle>
             {/* <NotesCount> {notes.length} anotações</NotesCount>  */}
           </RepositoryInformation>
         </HeaderHandlerView>
@@ -155,10 +176,11 @@ const repId = (Number(route.params.repositoryId))
                       : false
                   }
                   id={item.id}
-                  title={item.title}
+                  title={formatedTitle? capitalize(item.title):(item.title)}
                   description={item.description}
                   annotation={item.annotation}
                   navigation={navigation}
+                  formatedTitle={formatedTitle}
                 />
               )}
             />

@@ -5,3 +5,5 @@ export const photoDataKey = "@anotacoes-pessoais:photo";
 export const tokenDataKey = "@anotacoes-pessoais:token";
 
 export const loggedTypeDataKey = "@anotacoes-pessoais:loggedType";//Sinsoft, Google, Apple
+
+export const titleFormattedDataKey = "@anotacoes-pessoais:titleFormatted";

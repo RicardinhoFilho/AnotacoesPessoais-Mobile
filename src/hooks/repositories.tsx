@@ -34,6 +34,8 @@ interface IRepositoryContextData {
     title: string,
     description?: string
   ): Promise<void>;
+  repEffect: string;//"" | "update" | "add" | "delete"; //Este campo é utilizado para identificarmos alteração em nosso repositórios, dessa forma a screen search poderá decidir oq fará dependendo de cada operação ocorrida!
+  setrepEffect(effect:string): void;
 }
 
 interface IRepository {
@@ -47,6 +49,8 @@ function RepositoryProvider({ children }: IAuthProviderProps) {
   const { user, refreshToken, signOut } = useUser();
 
   const [repositories, setRepositories] = useState({} as IRepository[]);
+
+  const [repEffect, setrepEffect] = useState("");
 
   async function getRepositories() {
     try {
@@ -64,10 +68,12 @@ function RepositoryProvider({ children }: IAuthProviderProps) {
     }
   }
 
-  async function deleteRepository(title: string, id: string) {
+  async function deleteRepository(title: string, id: number) {
     try {
       await api.delete<IRepository[]>(`/api/repositories/${id}`);
       getRepositories();
+
+      setrepEffect("delete");
     } catch {
       throw new Error(
         `Não foi possível excluir ${title}, pois contém notas axadas!`
@@ -86,6 +92,8 @@ function RepositoryProvider({ children }: IAuthProviderProps) {
       });
 
       getRepositories();
+
+      setrepEffect("add");
     } catch (error) {
       console.log(error);
       throw new Error(
@@ -111,6 +119,7 @@ function RepositoryProvider({ children }: IAuthProviderProps) {
           });
 
       getRepositories();
+      setrepEffect("update");
     } catch (error) {
       console.log(error);
       throw new Error(`Não foi possível Editar o repositório ${oldTitle}`);
@@ -129,6 +138,8 @@ function RepositoryProvider({ children }: IAuthProviderProps) {
         addRepository,
         deleteRepository,
         updateRepository,
+        repEffect,
+        setrepEffect
       }}
     >
       {children}

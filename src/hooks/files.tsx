@@ -98,7 +98,7 @@ function FilesProvider({ children }: IAuthProviderProps) {
     } catch (error) {
       console.log(error);
       throw new Error("Não foi possível anexar o documento!")
-      setLoading(false);
+      //setLoading(false);
     }
     setLoading(false);
   }

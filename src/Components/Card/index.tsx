@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Modal, TouchableWithoutFeedback } from "react-native";
-
 import { ModalDangerRepositoryOperation } from "../ModalDangerRepositoryOperation";
 
 import { Feather } from "@expo/vector-icons";
@@ -10,6 +9,8 @@ import { Container, Title, Description } from "./styles";
 import { useNotes } from "../../hooks/notes";
 
 import { NotesModal } from "../NotesModal";
+import { titleFormattedDataKey } from "../../Services/asyncStorage";
+import { capitalize } from "../../Utils/capitalize";
 
 interface ICardProps {
   id: number;
@@ -17,9 +18,8 @@ interface ICardProps {
   description?: string;
   invisible: boolean;
   showDangeourButtons?: boolean;
-  setFilterIsPress(option: boolean): boolean;
-  setFilterValue(option: string): boolean;
   navigation: any;
+  formatedTitle:boolean;
   /*filterIsPress={filterIsPress}
                 filterValue={filterValue} */
 }
@@ -30,14 +30,14 @@ export function Card({
   description,
   invisible,
   showDangeourButtons,
-  setFilterIsPress,
-  setFilterValue,
   navigation,
+  formatedTitle,
 }: ICardProps) {
   const [modalOpen, setModalOpen] = useState(false);
   const [dangerRepositoryOperationModal, setDangerRepositoryOperationModal] =
     useState(false);
   const [notesModal, setNotesModal] = useState(false);
+  // const[formatedTitle,setFormatedTitle] = useState(false);
 
   function handleLongPress() {
     setModalOpen(!modalOpen);
@@ -65,16 +65,14 @@ export function Card({
     setDangerRepositoryOperationModal(true);
   }
 
- 
-
   return (
     <Container
       invisible={invisible}
       onLongPress={handleLongPress}
       onPress={handleOpenNotesModal}
-      delayLongPress={2000}
+      delayLongPress={500}
     >
-      <Title>{title}</Title>
+      <Title>{formatedTitle? capitalize(title) : title}</Title>
 
       {description ? (
         <Description>{description}</Description>

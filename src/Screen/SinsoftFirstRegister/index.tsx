@@ -126,7 +126,7 @@ export function SinsoftFirstRegister({ handleClose }: Props) {
       <Container>
         <Header>
           <ReturnIcon onPress={handleClose}>
-            <AntDesign name="left" size={20} color="white" />
+            <AntDesign name="arrowleft" size={24} color="white" />
           </ReturnIcon>
           <Title>Cadastro Sinsoft</Title>
         </Header>

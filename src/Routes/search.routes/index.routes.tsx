@@ -5,6 +5,7 @@ import { NotesModal } from "../../Components/NotesModal";
 import { NoteOperations } from "../../Components/NoteOperations";
 import { RepositoryOperations } from "../../Components/RepositoryOperations";
 import { Search } from "../../Screen/Search";
+import { Note } from "../../Components/Note";
 
 export function SearchNavigation() {
   const { Navigator, Screen } = createStackNavigator();
@@ -16,6 +17,7 @@ export function SearchNavigation() {
       <Screen name="Note" component={NotesModal} />
       <Screen name="NoteOperations" component={NoteOperations} />
       <Screen name="RepositoryOperations" component={RepositoryOperations} />
+      <Screen name="NoteDetails" component={Note}/>
     </Navigator>
   );
 }

@@ -3,7 +3,10 @@ import { PreferencesButton } from "../../Components/PreferencesButton";
 import { SignInSocialButton } from "../../Components/SingninSocialButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Alert, Modal } from "react-native";
-import { loggedTypeDataKey } from "../../Services/asyncStorage";
+import {
+  loggedTypeDataKey,
+  titleFormattedDataKey,
+} from "../../Services/asyncStorage";
 
 import { useUser } from "../../hooks/user";
 import { usesocialLogin } from "../../hooks/socialLogin";
@@ -37,6 +40,7 @@ export function Account() {
   const [loggedType, setLoggedType] = useState("");
   const [updatePasswordModal, setUpdatePasswordModal] = useState(false);
   const [useSinsoftAccountModal, setUseSinsoftAccountModal] = useState(false);
+  const [formatedTitle, setFormatedTitle] = useState(true);
 
   async function handleUseGoogleAccount() {
     const google = await signInWithGoogle();
@@ -63,7 +67,22 @@ export function Account() {
     setUpdatePasswordModal(!updatePasswordModal);
   }
 
+  async function handleFormatTitle() {
+    await AsyncStorage.setItem(titleFormattedDataKey, "true");
+    setFormatedTitle(true);
+  }
+
+  async function handleUnormatTitle() {
+    await AsyncStorage.setItem(titleFormattedDataKey, "false");
+    setFormatedTitle(false);
+  }
+
   useEffect(() => {
+    async function getTitleFormatedState(){
+     const titleState = await AsyncStorage.getItem(titleFormattedDataKey);
+     setFormatedTitle(Boolean(titleState === "true"));
+    }
+    getTitleFormatedState();
     handleSetLoggedType();
   }, [user]);
 
@@ -89,9 +108,15 @@ export function Account() {
       </Header>
       <Main>
         <MainWrapper>
-          <PreferencesButton title={"Sair"} icon={"power"} onPress={signOut} />
+          <PreferencesButton
+            IconFamily="Feather"
+            title={"Sair"}
+            icon={"power"}
+            onPress={signOut}
+          />
           {loggedType === "sinsoft" && (
             <PreferencesButton
+              IconFamily="Feather"
               title={"Alterar Senha"}
               icon={"key"}
               onPress={handleUpdatePasswordModal}
@@ -116,6 +141,21 @@ export function Account() {
               title="Utilizar Conta Apple"
               svg={AppleSvg}
               //  onPress={handleUseGoogleAccount}
+            />
+          )}
+          {!formatedTitle ? (
+            <PreferencesButton
+              title={"Habilitar Formatação de Títulos"}
+              icon={"title"}
+              onPress={handleFormatTitle}
+              IconFamily="Material"
+            />
+          ) : (
+            <PreferencesButton
+              title={"Desabilitar Formatação"}
+              icon={"remove-format"}
+              onPress={handleUnormatTitle}
+              IconFamily="FontAwesome5"
             />
           )}
         </MainWrapper>

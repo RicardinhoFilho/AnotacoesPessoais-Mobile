@@ -29,6 +29,8 @@ interface INotesContextData {
   notes: INotes[];
   loading: boolean;
   reload(): Promise<void>;
+  noteEffect: string; //para manipularmos a pesquisa em nossa sreen search
+  setNoteEffect(effect: string): void;
 }
 
 interface INotes {
@@ -43,6 +45,7 @@ function NotesProvider({ children }: IAuthProviderProps) {
   const [repositoryId, setRepositoryId] = useState(0);
   const [notes, setNotes] = useState({} as INotes[]);
   const [loading, setLoading] = useState(false);
+  const [noteEffect, setNoteEffect] = useState("");
 
   function handleSetRepositoryId(id: number) {
     setRepositoryId(id);
@@ -54,6 +57,7 @@ function NotesProvider({ children }: IAuthProviderProps) {
       await api.delete(`/api/note/${id}`);
       await getNotes(repositoryId);
       setLoading(false);
+      setNoteEffect("delete");
     } catch (error) {
       console.log(error);
 
@@ -75,6 +79,8 @@ function NotesProvider({ children }: IAuthProviderProps) {
   }
   async function reload() {
     await getNotes(repositoryId);
+
+    setNoteEffect("reload");
   }
   useEffect(() => {
     if (repositoryId > 0) {
@@ -90,6 +96,8 @@ function NotesProvider({ children }: IAuthProviderProps) {
         loading,
         deleteNote,
         reload,
+        noteEffect,
+        setNoteEffect,
       }}
     >
       {children}

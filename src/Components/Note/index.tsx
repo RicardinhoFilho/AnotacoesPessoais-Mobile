@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { WebView } from "react-native-webview";
 import HTMLView from 'react-native-htmlview';
+
+import { useFocusEffect } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { CardFiles } from "../CardFiles";
@@ -37,10 +39,13 @@ import {
 } from "./styles";
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { FileView } from "../FileView";
+import { titleFormattedDataKey } from "../../Services/asyncStorage";
+import { capitalize } from "../../Utils/capitalize";
 
 interface Props {
-  handleClose: () => void;
-  note: INote;
+  navigation: any;
+  route: any;
+  // note: INote;
 }
 
 interface INote {
@@ -56,32 +61,48 @@ interface IFile {
   title: string;
 }
 
-export function Note({ handleClose, note }: Props) {
+export function Note({route, navigation}: Props) {
   const { loadFiles, loading, files } = useFiles();
   const [addFileModal, setAddFileModal] = useState(false)
   const [loadingNote, setLoadingNote] = useState(true);
 
+  const [formatedTitle,setFormatedTitle] = useState(false);
+
   const htmlNote =
-    note.annotation[0] === "{"
-      ? draftToHtml(JSON.parse(note.annotation))
-      : note.annotation;
+  route.params.note.annotation[0] === "{"
+      ? draftToHtml(JSON.parse(route.params.note.annotation))
+      : route.params.note.annotation;
 
     function handleFileModal(){
       setAddFileModal(!addFileModal);
     }
 
   useEffect(() => {
-    loadFiles(note.id);
-  }, [note]);
+    loadFiles(route.params.note.id);
+  }, [route.params.note]);
+
+  useFocusEffect(
+    useCallback(() => {
+      async function getTitleFormatedState() {
+        const titleState = await AsyncStorage.getItem(titleFormattedDataKey);
+        console.log(titleState);
+        setFormatedTitle(Boolean(titleState === "true")); //Verificando se precisamos formatar titulos
+      }
+      getTitleFormatedState();
+      // console.log(formatedTitle)
+    }, [])
+  );
 
   return (
     <>
       <Header>
         <HandleTitle>
-        <ReturnIcon onPress={handleClose}>
+        <ReturnIcon onPress={()=>{
+          navigation.goBack();
+        }}>
           <AntDesign name="arrowleft" size={RFValue(24)} color="white" />
         </ReturnIcon>
-        <Title>{note.title}</Title>
+        <Title>{formatedTitle ? capitalize(route.params.note.title): route.params.note.title}</Title>
         </HandleTitle>
       </Header>
       <FilesView>
@@ -98,8 +119,8 @@ export function Note({ handleClose, note }: Props) {
               <CardFiles
                 file={item.file}
                 id={item.id}
-                title={item.title}
-                noteId={note.id}
+                title={formatedTitle ? capitalize(item.title) : item.title}
+                noteId={item.id}
               />
             )}
           />
@@ -118,17 +139,20 @@ export function Note({ handleClose, note }: Props) {
         }}
         style={{
           backgroundColor: "#D3D3D3",
-          padding: RFValue(50),
-          maxWidth: RFPercentage(100),
-          overflowY: "scroll",
-        }}
+          
+          //  padding: RFValue(50),
+           paddingLeft:RFValue(15), 
+          // maxWidth: RFPercentage(100),
+          // overflowY: "scroll",
+        
+        }}      
       /> 
       {/* <HTMLView
         value={htmlNote}
       /> */}
       </>
     <Modal visible={addFileModal}>
-    <AddFile handleClose={handleFileModal} noteId={note.id}/>
+    <AddFile handleClose={handleFileModal} noteId={route.params.note.id}/>
     </Modal>
 
     </>

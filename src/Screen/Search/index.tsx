@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Card } from "../../Components/Card";
 import { CardNotes } from "../../Components/CardNotes";
 import { useUser } from "../../hooks/user";
 import api from "../../Services/api";
 import { handleFilter } from "../../Utils/handleFilter";
+
+import { useFocusEffect } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import {
   Container,
@@ -26,6 +29,9 @@ import {
   NotesContainer,
   RepositoriesContainer,
 } from "./styles";
+import { titleFormattedDataKey } from "../../Services/asyncStorage";
+import { useRepositories } from "../../hooks/repositories";
+import {useNotes} from "../../hooks/notes";
 
 interface INotes {
   id: number;
@@ -40,14 +46,20 @@ interface IRepository {
   description?: string;
 }
 
+
 export function Search({navigation}:any) {
   const { user, signOut } = useUser();
+  const {repEffect,setrepEffect} = useRepositories();
+  const {noteEffect, setNoteEffect} = useNotes();
+
   const [search, setSearch] = useState("");
   const [filterIsPress, setFilterIsPress] = useState(false);
   const [filterValue, setFilterValue] = useState("");
   const [notes, setNotes] = useState({} as INotes[]);
   const [repositories, setRepositories] = useState({} as IRepository[]);
   const [loading, setLoading] = useState(false);
+
+  const [formatedTitle, setFormatedTitle] = useState(false)
 
   async function handleSearch() {
     setLoading(true);
@@ -61,6 +73,26 @@ export function Search({navigation}:any) {
     setLoading(false);
   }
 
+  useFocusEffect(
+    useCallback(() => {
+      async function getTitleFormatedState() {
+        const titleState = 
+          await AsyncStorage.getItem(titleFormattedDataKey)
+        ;
+        console.log(titleState)
+        setFormatedTitle(Boolean(titleState === "true"));//Verificando se precisamos formatar titulos
+      }
+      getTitleFormatedState();
+      console.log(formatedTitle)
+    }, [])
+  );
+  
+
+  useEffect(() => {
+    handleSearch();
+    setrepEffect("");
+    setNoteEffect("");
+  },[repEffect,noteEffect])
   return (
     <Container>
       <Header>
@@ -116,6 +148,8 @@ export function Search({navigation}:any) {
                 title={item.title}
                 description={item.description}
                 navigation={navigation}
+
+                formatedTitle={formatedTitle}
               />
             )}
           />
@@ -138,6 +172,8 @@ export function Search({navigation}:any) {
                 title={item.title}
                 description={item.description}
                 annotation={item.annotation}
+                formatedTitle={formatedTitle}
+                navigation={navigation}
               />
             )}
           />

@@ -31,7 +31,7 @@ export function FileView({ file, id, title, handleClose }: IFileProps) {
     <>
       <Header>
         <ReturnIcon onPress={handleClose}>
-          <AntDesign name="left" size={20} color="white" />
+          <AntDesign name="arrowleft" size={24} color="white" />
         </ReturnIcon>
         <Title>{title}</Title>
       </Header>

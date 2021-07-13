@@ -48,9 +48,10 @@ interface IFile {
 export function AddFile({ handleClose, noteId }: Props) {
   const { loading, postFile } = useFiles();
   const [title, setTitle] = useState("");
-  const [file, setFile] = useState({} as IFile);
+  const [file, setFile] = useState({} as Blob);
 
   const [titleIsValid, setTitleIsValid] = useState("");
+  const [fileIsValid, setFileIsValid] = useState("");
 
   const pickDocument = async () => {
     var fileToUpload;
@@ -79,10 +80,20 @@ export function AddFile({ handleClose, noteId }: Props) {
 
   const postDocument = async () => {
     handleTitleIsValid();
-    if (title.length > 0) {
-      //handleClose();
-      // console.log(file, "este");
-      postFile({ file, title, noteId });
+    try {
+      //console.log(file.name)
+      if (title.length > 0 && file.name) {
+        //handleClose();
+        // console.log(file, "este");
+        //console.log("aqui tem file")
+        postFile({ file, title, noteId });
+        handleClose();
+      }else{
+        setFileIsValid("Nenhum arquivo selecionado");
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert(error.message);
     }
   };
 
@@ -99,9 +110,9 @@ export function AddFile({ handleClose, noteId }: Props) {
       <Container>
         <Header>
           <ReturnIcon onPress={handleClose}>
-            <AntDesign name="left" size={20} color="white" />
+            <AntDesign name="arrowleft" size={24} color="white" />
           </ReturnIcon>
-          <Title>Anexar Imagem</Title>
+          <Title>Anexar Arquivo</Title>
         </Header>
         <Form>
           <Fields>
@@ -111,11 +122,15 @@ export function AddFile({ handleClose, noteId }: Props) {
               onBlur={handleTitleIsValid}
             />
             <Attention>{titleIsValid}</Attention>
+            <Attention>{fileIsValid}</Attention>
 
             <ImageFeedback>{file.name}</ImageFeedback>
 
-            <SubmitButton onPress={pickDocument}>
-              <ButtonText>Escolher Imagem</ButtonText>
+            <SubmitButton onPress={()=>{
+              setFileIsValid("");
+              pickDocument();
+              }}>
+              <ButtonText>Escolher arquivo</ButtonText>
             </SubmitButton>
 
             {loading && <Loader />}

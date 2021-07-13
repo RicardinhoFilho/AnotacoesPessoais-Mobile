@@ -26,7 +26,7 @@ export const ButtonConatiner = styled.View`
   width: 40%;
 
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
 `;
 
 export const EditButton = styled.TouchableOpacity`

@@ -1,4 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useCallback } from "react";
+
+
+import { useFocusEffect } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import {
   Container,
   Header,
@@ -35,6 +40,7 @@ import { Alert, Modal, TouchableWithoutFeedback } from "react-native";
 import { RepositoryOperations } from "../../Components/RepositoryOperations";
 
 import { Routes } from "../../Routes";
+import { titleFormattedDataKey } from "../../Services/asyncStorage";
 
 interface IUser {
   name?: string;
@@ -53,6 +59,8 @@ export function Repositories({navigation}:any) {
   const [filterValue, setFilterValue] = useState("");
 
   const [addRepositoryModalOpen, setAddRepositoryModalOpen] = useState(false);
+
+  const [formatedTitle, setFormatedTitle] = useState(false);
 
   function handleLogOut() {
     signOut();
@@ -74,6 +82,20 @@ export function Repositories({navigation}:any) {
   function testa() {
     console.log("teste");
   }
+
+  useFocusEffect(
+    useCallback(() => {
+      async function getTitleFormatedState() {
+        const titleState = 
+          await AsyncStorage.getItem(titleFormattedDataKey)
+        ;
+        console.log(titleState)
+        setFormatedTitle(Boolean(titleState === "true"));//Verificando se precisamos formatar titulos
+      }
+      getTitleFormatedState();
+      console.log(formatedTitle)
+    }, [])
+  );
 
   return (
     <Container>
@@ -146,6 +168,7 @@ export function Repositories({navigation}:any) {
                 setFilterIsPress={setFilterIsPress}
                 setFilterValue={setFilterValue}
                 navigation={navigation}
+                formatedTitle={formatedTitle}
               />
             )}
           />

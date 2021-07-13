@@ -8,6 +8,7 @@ import { Feather } from "@expo/vector-icons";
 import { Container, Title, Description } from "./styles";
 import { ModalDangerNoteoOperation } from "../ModalDangerNote";
 import { Note } from "../Note";
+import { capitalize } from "../../Utils/capitalize";
 
 interface ICardProps {
   id: number;
@@ -16,7 +17,9 @@ interface ICardProps {
   annotation: string;
   invisible: boolean;
   showDangeourButtons?: boolean;
-  navigation:any;
+  navigation: any;
+
+  formatedTitle: boolean;
 }
 
 export function CardNotes({
@@ -26,14 +29,17 @@ export function CardNotes({
   annotation,
   invisible,
   showDangeourButtons,
-  navigation
+  navigation,
+  formatedTitle,
 }: ICardProps) {
   const [dangerNoteModalOperation, setDangerNoteModalOperation] =
     useState(false);
   const [noteModal, setNoteModal] = useState(false);
 
   function handleNoteModalOpen() {
-    setNoteModal(true);
+    navigation.navigate("NoteDetails",{
+      note:{  title, description, annotation, id },
+    } )
   }
 
   function handleNoteModalClose() {
@@ -53,9 +59,9 @@ export function CardNotes({
       invisible={invisible}
       onPress={handleNoteModalOpen}
       onLongPress={handleLongPress}
-      delayLongPress={3000}
+      delayLongPress={500}
     >
-      <Title>{title}</Title>
+      <Title>{formatedTitle? capitalize(title) : title}</Title>
 
       {description ? (
         <Description>{description}</Description>
@@ -71,12 +77,12 @@ export function CardNotes({
         />
       </Modal>
 
-      <Modal visible={noteModal}>
+      {/* <Modal visible={noteModal}>
         <Note
-          note={{ title, description, annotation, id }}
+          note={{  title, description, annotation, id }}
           handleClose={handleNoteModalClose}
-        />
-      </Modal>
+        /> 
+      </Modal>*/}
     </Container>
   );
 }
