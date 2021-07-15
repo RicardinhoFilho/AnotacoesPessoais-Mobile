@@ -86,13 +86,21 @@ export function Search({navigation}:any) {
       console.log(formatedTitle)
     }, [])
   );
-  
 
-  useEffect(() => {
-    handleSearch();
+  useFocusEffect(
+    useCallback(() => {
+      handleSearch();
     setrepEffect("");
     setNoteEffect("");
-  },[repEffect,noteEffect])
+    }, [repEffect,noteEffect])
+  );
+  
+
+  // useEffect(() => {
+  //   handleSearch();
+  //   setrepEffect("");
+  //   setNoteEffect("");
+  // },[repEffect,noteEffect])
   return (
     <Container>
       <Header>
